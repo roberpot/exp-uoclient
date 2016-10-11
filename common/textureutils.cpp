@@ -3,6 +3,9 @@
 //
 
 #include <GL/gl.h>
+#ifdef __MINGW32__
+#include <GL/glext.h>
+#endif
 
 #include "debug.h"
 #include "textureutils.h"

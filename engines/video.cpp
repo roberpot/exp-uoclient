@@ -1,4 +1,7 @@
 #include <GL/gl.h>
+#ifdef __MINGW32__
+#include <GL/glext.h>
+#endif
 
 #include "../common/debug.h"
 #include "video.h"

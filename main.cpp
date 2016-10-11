@@ -11,7 +11,9 @@
 #include "cashley/visualprocessor.h"
 #include "cashley/gumppic.h"
 
-int main() {
+int main(int argc, char * argv[]) {
+    UNREFERENCED_PARAMETER(argc);
+    UNREFERENCED_PARAMETER(argv);
     debug_init();
     // Engines.
     VideoEngine * video = VideoEngine::get();

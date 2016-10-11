@@ -26,6 +26,10 @@ FIND_LIBRARY(CASHLEY_LIBRARY_TEMP
         )
 
 IF(CASHLEY_LIBRARY_TEMP)
+    # For MinGW library
+    IF(MINGW)
+        SET(CASHLEY_LIBRARY_TEMP ${MINGW32_LIBRARY} ${CASHLEY_LIBRARY_TEMP})
+    ENDIF(MINGW)
     # Set the final string here so the GUI reflects the final state.
     SET(CASHLEY_LIBRARY ${CASHLEY_LIBRARY_TEMP} CACHE STRING "Where the CAshley Library can be found")
     # Set the temp variable to INTERNAL so it is not seen in the CMake GUI

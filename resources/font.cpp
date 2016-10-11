@@ -2,6 +2,8 @@
 // Created by rot on 10/10/16.
 //
 
+#include <cstdio>
+
 #include <GL/gl.h>
 
 #include "../common/colorutils.h"
