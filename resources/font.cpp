@@ -4,12 +4,12 @@
 
 #include <GL/gl.h>
 
-//#include "debug.h"
-#include "../common/types.h"
-#include "../common/textureutils.h"
 #include "../common/colorutils.h"
-#include "../common/utils.h"
+#include "../common/debug.h"
 #include "../common/errors.h"
+#include "../common/textureutils.h"
+#include "../common/types.h"
+#include "../common/utils.h"
 #include "font.h"
 
 class Glyph {
@@ -108,6 +108,7 @@ FontManager * FontManager::get() {
 void FontManager::init(const char * file) {
     FILE * f = fopen(file, "rb");
     if (!f) {
+        DEBUG_ERROR("No encuentro el fichero de fuentes " << file);
         FileError e("Fichero de fuentes no encontrado.");
         throw e;
     }
@@ -119,19 +120,18 @@ void FontManager::init(const char * file) {
     fseek(f, 1, SEEK_SET);
     while(!feof(f)) {
         Font * font = new Font;
-//        DEBUG_MSG("Reading font " << fonts.size());
+        DEBUG_MSG("Reading font " << fonts.size());
         for(unsigned int i = 0; i < 224; i++) {
             w = fgetc(f);
             h = fgetc(f);
             header = fgetc(f);
-            //DEBUG_MSG("Glyph " << i << " CP: " << ftell(f) << " W: " << (int)w << " H: " << (int)h << " Header: " << (int)header);
-
+            DEBUG_MSG("Glyph " << i << " CP: " << ftell(f) << " W: " << (int)w << " H: " << (int)h << " Header: " << (int)header);
             pixels = new uo_color[w * h];
             pixels32 = new unsigned int[w * h];
 
             bytes_readed = fread(pixels, sizeof(uo_color), w * h, f);
             if (bytes_readed != (unsigned int)(w * h)) {
-                //DEBUG_MSG("ERROR!! Readed: " << bytes_readed << " Needed: " << (w * h));
+                DEBUG_WARNING("Readed: " << bytes_readed << " Needed: " << (w * h));
             }
             for (unsigned int j = 0; j < (unsigned int)(w * h); j++) {
                 current_color = color16_to_color32(pixels[j]);
@@ -151,7 +151,7 @@ void FontManager::init(const char * file) {
         fgetc(f);
     }
     fclose(f);
-//    DEBUG_MSG("Readed " << fonts.size() << " fonts.");
+    DEBUG_MSG("Readed " << fonts.size() << " fonts.");
 }
 
 void FontManager::halt() {

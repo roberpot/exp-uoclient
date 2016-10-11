@@ -4,8 +4,9 @@
 
 #include <GL/gl.h>
 
+#include "debug.h"
 #include "textureutils.h"
-//#include "debug.h"
+
 
 unsigned int generate_texture_from_surface(SDL_Surface * surface)
 {
@@ -34,9 +35,9 @@ unsigned int generate_texture_from_raw(unsigned int width, unsigned int height, 
                   GL_UNSIGNED_BYTE, rawpixels);
     GLenum err;
     if ((err = glGetError()) != GL_NO_ERROR) {
-        //DEBUG_MSG("OpenGL Error" << err);
+        DEBUG_ERROR("OpenGL Error" << err);
     } else {
-        //DEBUG_MSG("New texture " << texture);
+        DEBUG_MSG("New texture " << texture);
     }
 
     return texture;

@@ -7,6 +7,8 @@
 
 #include <SDL2/SDL.h>
 
+#include "../common/debug.h"
+
 class VideoEngine {
 public:
     static VideoEngine * get();
@@ -18,8 +20,8 @@ public:
     unsigned int get_collide_color();
 private:
     VideoEngine() {}
-    VideoEngine(const VideoEngine &v) {}
-    void operator = (const VideoEngine &v) {}
+    VideoEngine(const VideoEngine &v) { UNREFERENCED_PARAMETER(v); }
+    void operator = (const VideoEngine &v) { UNREFERENCED_PARAMETER(v); }
     static VideoEngine _v;
 
     SDL_Window * window;

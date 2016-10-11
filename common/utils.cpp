@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <GL/gl.h>
 
+#include "debug.h"
 #include "utils.h"
 
 unsigned int change_endian(unsigned int i)
@@ -12,6 +13,7 @@ unsigned int change_endian(unsigned int i)
     t = i << 16;
     t &= 0xFF00;
     r |= t;
+
     std::cout << "Original: " << std::endl;
     print_raw((uo_byte *)&i, 1);
     std::cout << "Procesado: " << std::endl;
@@ -36,6 +38,7 @@ void print_raw(uo_byte * raw, unsigned int l) {
 }
 
 std::string int2hex_string(unsigned int i) {
+    UNREFERENCED_PARAMETER(i);
     std::string a;
     return a;
 }

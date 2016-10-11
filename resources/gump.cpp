@@ -5,11 +5,9 @@
 #include <SDL2/SDL.h>
 #include <GL/gl.h>
 
-#include "gump.h"
 #include "../common/colorutils.h"
 #include "../common/textureutils.h"
-//#include "utils.h"
-//#include "debug.h"
+#include "gump.h"
 
 #define GUMP_INDEX_ENTRY_SIZE 12
 

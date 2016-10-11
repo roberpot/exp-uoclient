@@ -3,11 +3,13 @@
 #include <GL/gl.h>
 #include <SDL2/SDL.h>
 
+#include "common/debug.h"
 #include "engines/video.h"
 #include "resources/gump.h"
 #include "resources/font.h"
 
 int main() {
+    debug_init();
     // Engines.
     VideoEngine * video = VideoEngine::get();
     // Resources.
@@ -60,7 +62,7 @@ int main() {
         glLoadIdentity();
         video->run();
     }
-
     video->halt_subsystem();
+    debug_halt();
     return 0;
 }

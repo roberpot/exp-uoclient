@@ -9,6 +9,7 @@
 #include <map>
 #include <set>
 
+#include "../common/debug.h"
 #include "../common/types.h"
 
 
@@ -30,8 +31,8 @@ public:
     unsigned int mem_size() { return _cache_size + _inuse_size; }
 private:
     GumpManager() {}
-    GumpManager(const GumpManager &g) {}
-    void operator = (const GumpManager & g) {}
+    GumpManager(const GumpManager &g) { UNREFERENCED_PARAMETER(g); }
+    void operator = (const GumpManager & g) { UNREFERENCED_PARAMETER(g); }
     GumpInfo _load_gump(uo_dword i);
     static GumpManager _gm;
     FILE * _findex, * _fdata;

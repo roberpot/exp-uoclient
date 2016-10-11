@@ -1,5 +1,6 @@
 #include <GL/gl.h>
 
+#include "../common/debug.h"
 #include "video.h"
 
 
@@ -10,12 +11,12 @@ VideoEngine  *VideoEngine::get() {
 
 void VideoEngine::init_subsystem() {
     if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0 ) {
-        printf( "Unable to init SDL: %s\n", SDL_GetError() );
+        DEBUG_ERROR("Unable to init SDL: " << SDL_GetError());
         throw 1;
     }
     // create a new window
     window = SDL_CreateWindow(
-            "Fall of Tyranny Client",                  // window title
+            "Exp UO Client",                  // window title
             SDL_WINDOWPOS_UNDEFINED,           // initial x position
             SDL_WINDOWPOS_UNDEFINED,           // initial y position
             800,                               // width, in pixels
@@ -24,7 +25,7 @@ void VideoEngine::init_subsystem() {
     );
 
     if (!window) {
-        printf("Unable to set 800x600 video: %s\n", SDL_GetError());
+        DEBUG_ERROR("Unable to set 800x600 video: " << SDL_GetError());
         throw 1;
     }
 
@@ -66,7 +67,6 @@ void VideoEngine::clear() {
     glReadPixels(10, 10, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, &collide_color);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-
 }
 
 unsigned int VideoEngine::gen_collide_color() {

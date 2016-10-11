@@ -5,8 +5,10 @@
 #ifndef __UONEWCLIENT_FONT_H
 #define __UONEWCLIENT_FONT_H
 
-#include <bitset>
 #include <vector>
+
+#include "../common/debug.h"
+
 
 class Glyph;
 
@@ -46,8 +48,8 @@ public:
     unsigned int rasterize(unsigned int f, const char * buffer);
 private:
     FontManager() {}
-    FontManager(const FontManager &f) {}
-    void operator = (const FontManager &f) {}
+    FontManager(const FontManager &f) { UNREFERENCED_PARAMETER(f); }
+    void operator=(const FontManager &f) { UNREFERENCED_PARAMETER(f); }
     static FontManager _fm;
     std::vector<Font *> fonts;
 };
