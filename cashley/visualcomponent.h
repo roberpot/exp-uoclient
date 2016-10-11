@@ -8,11 +8,15 @@
 #include <cashley/cashley.h>
 
 
-class VisuaComponent : public CAshley::Component {
+class VisualComponent : public CAshley::Component {
 public:
-    void init() {};
-    void shutdown() {};
+    void init();
+    void setup(int x, int y, int w, int h, int z, unsigned int texture, unsigned int flags);
+    void shutdown();
+    void display();
     CASHLEY_COMPONENT
+private:
+    unsigned int displaylist_id;
 };
 
 #endif //__UONEWCLIENT_VISUALCOMPONENT_H

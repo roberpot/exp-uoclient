@@ -2,11 +2,14 @@
 
 #include <GL/gl.h>
 #include <SDL2/SDL.h>
+#include <cashley/cashley.h>
 
 #include "common/debug.h"
 #include "engines/video.h"
 #include "resources/gump.h"
 #include "resources/font.h"
+#include "cashley/visualprocessor.h"
+#include "cashley/gumppic.h"
 
 int main() {
     debug_init();
@@ -15,6 +18,9 @@ int main() {
     // Resources.
     GumpManager * gumpmanager = GumpManager::get();
     FontManager * fontmanager = FontManager::get();
+    CAshley::Engine * engine = new CAshley::Engine;
+    engine->add_processor<VisualProcessor>();
+    engine->get_processor<VisualProcessor>()->activate();
 
     // Initialize systems.
     SDL_Init(0);
@@ -28,6 +34,11 @@ int main() {
     unsigned int text, panete;
     text = fontmanager->rasterize(0, "Cargando...");
     panete = fontmanager->rasterize(3, "Panete es muy muy muy feliz :D :D");
+
+    GumpPic * entity = new GumpPic;
+    engine->add_entity(entity);
+    entity->init(6, 50, 50, 0);
+    entity->activate();
 
     bool done = false;
     while (!done) {
@@ -60,6 +71,7 @@ int main() {
         glCallList(panete);
         glDepthMask(GL_TRUE);
         glLoadIdentity();
+        engine->run_tick(1);
         video->run();
     }
     video->halt_subsystem();

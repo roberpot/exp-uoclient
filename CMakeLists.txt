@@ -28,24 +28,32 @@ SET(SOURCE_FILES
     resources/font.cpp
     resources/font.h
     main.cpp
-        common/physicalcomponent.cpp common/physicalcomponent.h common/visualcomponent.cpp common/visualcomponent.h)
+    cashley/physicalcomponent.cpp
+        cashley/physicalcomponent.h
+        cashley/visualcomponent.cpp
+        cashley/visualcomponent.h
+        cashley/gumppic.cpp
+        cashley/gumppic.h
+        cashley/visualprocessor.cpp
+        cashley/visualprocessor.h)
 
 add_executable(uonewclient_release ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(uonewclient_release
     ${SDL2_LIBRARY}
     ${SDL2_IMAGE_LIBRARIES}
     ${SDL2_TTF_LIBRARIES}
-    ${CASHLEY_LIBRARIES}
+    ${CASHLEY_LIBRARY}
     ${OPENGL_LIBRARIES}
 )
 TARGET_COMPILE_DEFINITIONS(uonewclient_release PUBLIC DEBUG_MODE=0)
 
 add_executable(uonewclient_debug ${SOURCE_FILES})
+
 TARGET_LINK_LIBRARIES(uonewclient_debug
     ${SDL2_LIBRARY}
     ${SDL2_IMAGE_LIBRARIES}
     ${SDL2_TTF_LIBRARIES}
-    ${CASHLEY_LIBRARIES}
+    ${CASHLEY_LIBRARY}
     ${OPENGL_LIBRARIES}
 )
 TARGET_COMPILE_DEFINITIONS (uonewclient_debug PUBLIC DEBUG_MODE=5)
