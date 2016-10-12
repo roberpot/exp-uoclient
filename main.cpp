@@ -35,12 +35,15 @@ int main(int argc, char * argv[]) {
     // TODO: remove
     unsigned int text, panete;
     text = fontmanager->rasterize(0, "Cargando...");
-    panete = fontmanager->rasterize(3, "Panete es muy muy muy feliz :D :D");
+    panete = fontmanager->rasterize(3, "Panete es muy muy muy feliz :D :D ...");
 
-    GumpPic * entity = new GumpPic;
+    GumpPic * entity = new GumpPic, * entity2 = new GumpPic;
     engine->add_entity(entity);
     entity->init(6, 50, 50, 0);
     entity->activate();
+    engine->add_entity(entity2);
+    entity2->init(12, 150, 150, 0);
+    entity2->activate();
 
     bool done = false;
     while (!done) {

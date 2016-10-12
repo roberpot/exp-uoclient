@@ -35,7 +35,7 @@ SET(SOURCE_FILES
         cashley/gumppic.cpp
         cashley/gumppic.h
         cashley/visualprocessor.cpp
-        cashley/visualprocessor.h)
+        cashley/visualprocessor.h artifacts/form.cpp artifacts/form.h)
 
 add_executable(uonewclient_release ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(uonewclient_release

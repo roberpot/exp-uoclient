@@ -22,8 +22,8 @@ void VideoEngine::init_subsystem() {
             "Exp UO Client",                  // window title
             SDL_WINDOWPOS_UNDEFINED,           // initial x position
             SDL_WINDOWPOS_UNDEFINED,           // initial y position
-            800,                               // width, in pixels
-            600,                               // height, in pixels
+            640,                               // width, in pixels
+            480,                               // height, in pixels
             SDL_WINDOW_OPENGL                  // flags - see below
     );
 
@@ -46,10 +46,10 @@ void VideoEngine::init_subsystem() {
     //glEnable(GL_BLEND);
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
-    glViewport (0 , 0 , 800, 600 ) ;
+    glViewport (0 , 0 , 640, 480 ) ;
     glMatrixMode ( GL_PROJECTION ) ;
     glLoadIdentity ();
-    glOrtho ( 0,800,600 , 0, 100000, -100000 ) ;
+    glOrtho ( 0,640,480 , 0, 100000, -100000 ) ;
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     next_collide_color = 0;
