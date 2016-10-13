@@ -9,23 +9,50 @@
 #include "visualcomponent.h"
 
 void VisualComponent::init() {
+    data = new VisualComponentData;
+    _displaylist = glGenLists(1);
+}
 
+
+void VisualComponent::setup_with_dl(int x, int y, int z, unsigned int dl, unsigned int flags) {
+    data->w = 0;
+    data->h = 0;
+    data->texture = 0;
+    data->flags = flags;
+    data->internal_dl = dl;
+    move(x, y, z);
 }
 
 void VisualComponent::setup(int x, int y, int w, int h, int z, unsigned int texture, unsigned int flags) {
-    UNREFERENCED_PARAMETER(flags);
-    displaylist_id = glGenLists(1);
-    glNewList(displaylist_id, GL_COMPILE);
-    display_textured_square(x, y, w, h, z, texture);
+    data->w = w;
+    data->h = h;
+    data->texture = texture;
+    data->flags = flags;
+    move(x, y, z);
+}
+
+void VisualComponent::move(int x, int y, int z) {
+    data->x = x;
+    data->y = y;
+    data->z = z;
+    glDeleteLists(_displaylist, 1);
+    glNewList(_displaylist, GL_COMPILE);
+    if (data->flags & GC_F_INTERNAL_DL) {
+        glPushMatrix();
+        glTranslated(x, y, data->z);
+        glCallList(data->internal_dl);
+        glPopMatrix();
+    } else {
+        display_textured_square(x, y, data->w, data->h, data->z, data->texture);
+    }
     glEndList();
 }
 
 void VisualComponent::shutdown() {
-//    if (settings->flags & GC_F_DELETE_DL) {
-//        glDeleteLists(displaylist_id, 1);
-//    }
+    glDeleteLists(_displaylist, 1);
+    delete data;
 }
 
 void VisualComponent::display() {
-    glCallList(displaylist_id);
+    glCallList(_displaylist);
 }

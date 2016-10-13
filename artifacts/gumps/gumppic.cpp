@@ -2,18 +2,22 @@
 // Created by rot on 11/10/16.
 //
 
-#include "../resources/gump.h"
+#include "../../resources/gump.h"
 
 #include "gumppic.h"
-#include "visualcomponent.h"
+#include "../../cashley/visualcomponent.h"
 
-void GumpPic::init(uo_dword gumpid, int x, int y, int z) {
-    GumpManager * gumpmanager = GumpManager::get();
-    add_component<VisualComponent>();
+void GumpPic::init(Form * f, uo_dword gumpid, int x, int y, int z) {
+    BaseGump::init(f);
     _gump_id = gumpid;
+
+    GumpManager * gumpmanager = GumpManager::get();
+    // Graphical component.
+    add_component<VisualComponent>();
     GumpInfo ginfo = gumpmanager->get_gump(_gump_id);
     VisualComponent * gcomp = this->get_component<VisualComponent>();
     gcomp->setup(x, y, ginfo.width, ginfo.height, z, ginfo.texture, 0);
+    // Physical component.
 }
 
 void GumpPic::shutdown() {

@@ -17,7 +17,7 @@ public:
     void run();
     void clear();
     unsigned int gen_collide_color();
-    unsigned int get_collide_color();
+    unsigned int get_collor_at_position(int x, int y);
 private:
     VideoEngine() {}
     VideoEngine(const VideoEngine &v) { UNREFERENCED_PARAMETER(v); }
@@ -26,7 +26,7 @@ private:
 
     SDL_Window * window;
     SDL_GLContext glcontext;
-    unsigned int next_collide_color, collide_color;
+    unsigned int next_collide_color;
 };
 
 #endif //__UONEWCLIENT_VIDEO_H

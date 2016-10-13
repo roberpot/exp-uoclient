@@ -7,9 +7,12 @@
 
 #include <cashley/cashley.h>
 
-class GumpPic : public CAshley::Entity {
+#include "basegump.h"
+#include "../../common/types.h"
+
+class GumpPic : public CAshley::Entity, public BaseGump {
 public:
-    void init(uo_dword gumpid, int x, int y, int z);
+    void init(Form * f, uo_dword gumpid, int x, int y, int z);
     void shutdown();
 private:
     uo_dword _gump_id;

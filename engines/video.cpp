@@ -67,7 +67,6 @@ void VideoEngine::run() {
 }
 
 void VideoEngine::clear() {
-    glReadPixels(10, 10, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, &collide_color);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 }
@@ -77,6 +76,8 @@ unsigned int VideoEngine::gen_collide_color() {
     return (ret << 8) & 0xFFFFFF00;
 }
 
-unsigned int VideoEngine::get_collide_color() {
-    return collide_color;
+unsigned int VideoEngine::get_collor_at_position(int x, int y) {
+    unsigned int color;
+    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, &color);
+    return color;
 }

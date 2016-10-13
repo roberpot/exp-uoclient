@@ -10,9 +10,13 @@
 
 class PhysicalComponent : public CAshley::Component {
 public:
-    void init() {};
+    void init();
     void shutdown() {};
+    void setup(int x, int y, int w, int h, int z);
     CASHLEY_COMPONENT
+private:
+    unsigned int _color;
+    static unsigned int _color_serial;
 };
 
 #endif //__UONEWCLIENT_PHYSICALCOMPONENT_H
