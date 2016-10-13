@@ -36,27 +36,12 @@ int main(int argc, char * argv[]) {
     gumpmanager->init("gumpidx.mul", "gumpart.mul");
     fontmanager->init("fonts.mul");
 
-    // TODO: remove
-//    unsigned int text, panete;
-//    text = fontmanager->rasterize(0, "Cargando...");
-//    panete = fontmanager->rasterize(3, "Panete es muy muy muy feliz :D :D ...");
-
     Form * loginform = form_login(engine);
     loginform->enable();
 
     while (input->continue_execution()) {
         input->run();
-        video->clear();
-//        glLoadIdentity();
-//        glDepthMask(GL_FALSE);
-//        glTranslated(0, 0, 0);
-//        glCallList(text);
-//        glTranslated(10, 80, 0);
-//        glCallList(panete);
-//        glDepthMask(GL_TRUE);
-//        glLoadIdentity();
         engine->run_tick(1);
-        video->run();
     }
     video->halt_subsystem();
     input->halt_subsystem();

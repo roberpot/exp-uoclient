@@ -13,6 +13,8 @@ public:
     void init();
     void shutdown() {};
     void setup(int x, int y, int w, int h, int z);
+    void display() {};
+    void run() {};
     CASHLEY_COMPONENT
 private:
     unsigned int _color;

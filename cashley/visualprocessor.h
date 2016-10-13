@@ -11,7 +11,6 @@
 
 class VisualProcessor : public CAshley::Processor {
     public:
-        unsigned int counter;
         virtual void run_tick(unsigned int delay);
         CASHLEY_PROCESSOR
 };

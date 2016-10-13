@@ -4,6 +4,7 @@
 
 #include <GL/gl.h>
 
+#include "../engines/video.h"
 #include "visualprocessor.h"
 #include "visualcomponent.h"
 
@@ -14,7 +15,10 @@ void VisualProcessor::run_tick(unsigned int delay) {
     CAshley::EntityArray v;
     f.filter<VisualComponent>();
     v = this->_engine->get_entities_for(f);
+    VideoEngine * video = VideoEngine::get();
+    video->clear();
     for (unsigned int i = 0; i < v.size(); i++) {
         v[i]->get_component<VisualComponent>()->display();
     }
+    video->run();
 }

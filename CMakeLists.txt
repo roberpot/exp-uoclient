@@ -35,7 +35,7 @@ SET(SOURCE_FILES
         artifacts/gumps/gumppic.cpp
         artifacts/gumps/gumppic.h
         cashley/visualprocessor.cpp
-        cashley/visualprocessor.h artifacts/form.cpp artifacts/form.h artifacts/gumps/basegump.cpp artifacts/gumps/basegump.h artifacts/artifact.cpp artifacts/artifact.h engines/input.cpp engines/input.h contrib/form_login.cpp contrib/form_login.h artifacts/gumps/gumps.h artifacts/gumps/text.cpp artifacts/gumps/text.h)
+        cashley/visualprocessor.h artifacts/form.cpp artifacts/form.h artifacts/gumps/basegump.cpp artifacts/gumps/basegump.h artifacts/artifact.cpp artifacts/artifact.h engines/input.cpp engines/input.h contrib/form_login.cpp contrib/form_login.h artifacts/gumps/gumps.h artifacts/gumps/text.cpp artifacts/gumps/text.h cashley/physicsprocessor.cpp cashley/physicsprocessor.h)
 
 add_executable(uonewclient_release ${SOURCE_FILES})
 TARGET_LINK_LIBRARIES(uonewclient_release
