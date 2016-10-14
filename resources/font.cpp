@@ -136,9 +136,11 @@ void FontManager::init(const char * file) {
                 DEBUG_WARNING("Readed: " << bytes_readed << " Needed: " << (w * h));
             }
             for (unsigned int j = 0; j < (unsigned int)(w * h); j++) {
-                current_color = (unsigned int)color16_to_color32(pixels[j]) & 0xFFFFFF00;
+                current_color = (unsigned int)color16_to_color32(pixels[j]);
                 if (!current_color) {
-                    current_color = 0x000000FF;
+                    current_color = 0x00000000;
+                } else {
+                    current_color |= 0xFF000000;
                 }
                 pixels32[j] = current_color;
 

@@ -117,17 +117,20 @@ GumpInfo GumpManager::_load_gump(uo_dword i) {
     }
     unsigned int * rawsurface = new unsigned int[entry.width * entry.height];
 
-    for(int i = 0; i < (entry.height * entry.width); i++) {
+    for(int k = 0; k < (entry.height * entry.width); k++) {
         while (counter == 0) {
             memcpy(raw, &(gumpdata[index]), 4);
             //print_raw(raw, 4);
             memcpy(&readed_color, raw, sizeof(uo_uword));
             memcpy(&counter, &raw[2], sizeof(uo_uword));
-            color = color16_to_color32(readed_color);
+            color = (unsigned int)color16_to_color32(readed_color);
+            if (color) {
+                color |= 0xFF000000;
+            }
             index += 4;
             computed_size += counter;
         }
-        rawsurface[i] = color;
+        rawsurface[k] = color;
         counter--;
     }
     delete gumpdata;

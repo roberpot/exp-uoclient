@@ -9,6 +9,7 @@
 #include "engines/input.h"
 #include "resources/gump.h"
 #include "resources/font.h"
+#include "cashley/physicsprocessor.h"
 #include "cashley/visualprocessor.h"
 #include "contrib/form_login.h"
 //#include "cashley/gumppic.h"
@@ -24,6 +25,8 @@ int main(int argc, char * argv[]) {
     GumpManager * gumpmanager = GumpManager::get();
     FontManager * fontmanager = FontManager::get();
     CAshley::Engine * engine = new CAshley::Engine;
+    engine->add_processor<PhysicsProcessor>();
+    engine->get_processor<PhysicsProcessor>()->activate();
     engine->add_processor<VisualProcessor>();
     engine->get_processor<VisualProcessor>()->activate();
 

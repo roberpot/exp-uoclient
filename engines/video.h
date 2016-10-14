@@ -16,6 +16,8 @@ public:
     void halt_subsystem();
     void run();
     void clear();
+    void prepare_for_graphics();
+    void prepare_for_physics();
     unsigned int gen_collide_color();
     unsigned int get_collor_at_position(int x, int y);
 private:

@@ -17,8 +17,11 @@ void VisualProcessor::run_tick(unsigned int delay) {
     v = this->_engine->get_entities_for(f);
     VideoEngine * video = VideoEngine::get();
     video->clear();
+    video->prepare_for_graphics();
+    glColor4f(1.0, 1.0, 1.0, 1.0);
     for (unsigned int i = 0; i < v.size(); i++) {
         v[i]->get_component<VisualComponent>()->display();
     }
-    video->run();
+//    video->run();
+
 }

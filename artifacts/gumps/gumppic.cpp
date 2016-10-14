@@ -6,6 +6,7 @@
 
 #include "gumppic.h"
 #include "../../cashley/visualcomponent.h"
+#include "../../cashley/physicalcomponent.h"
 
 void GumpPic::init(Form * f, uo_dword gumpid, int x, int y, int z) {
     BaseGump::init(f);
@@ -15,9 +16,10 @@ void GumpPic::init(Form * f, uo_dword gumpid, int x, int y, int z) {
     // Graphical component.
     add_component<VisualComponent>();
     GumpInfo ginfo = gumpmanager->get_gump(_gump_id);
-    VisualComponent * gcomp = this->get_component<VisualComponent>();
-    gcomp->setup(x, y, ginfo.width, ginfo.height, z, ginfo.texture, 0);
+    get_component<VisualComponent>()->setup(x, y, ginfo.width, ginfo.height, z, ginfo.texture, 0);
     // Physical component.
+    add_component<PhysicalComponent>();
+    get_component<PhysicalComponent>()->setup();
 }
 
 void GumpPic::shutdown() {

@@ -35,17 +35,14 @@ void VideoEngine::init_subsystem() {
     // Initialize GL.
     glcontext = SDL_GL_CreateContext(window);
 
-    glClearColor(0,0,0,0);
+    glClearColor(1, 1, 1, 0);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glEnable(GL_TEXTURE_2D);
     glClearDepth(1.0f);                   // Set background depth to farthest
     glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
     glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
     glShadeModel(GL_SMOOTH);   // Enable smooth shading
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glDisable(GL_LIGHTING);
-//    glEnable(GL_ALPHA_TEST);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
     glViewport (0 , 0 , 640, 480 ) ;
     glMatrixMode ( GL_PROJECTION ) ;
@@ -62,25 +59,28 @@ void VideoEngine::halt_subsystem() {
 }
 
 void VideoEngine::run() {
-
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_BLEND);
     SDL_GL_SwapWindow(window);
-    glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity();
+    clear();
 }
 
 void VideoEngine::clear() {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
+}
+
+
+void VideoEngine::prepare_for_graphics() {
     glColor4f(1.0, 0.0, 0.0, 1.0);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-//    glDepthMask(GL_FALSE);
-    glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//    glBlendEquation(GL_FUNC_ADD);
-    //glBlendFunc(GL_DST_ALPHA, GL_ZERO);
+}
+
+void VideoEngine::prepare_for_physics() {
+    glColor4f(1.0, 0.0, 0.0, 1.0);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 unsigned int VideoEngine::gen_collide_color() {
