@@ -24,7 +24,7 @@ public:
     static GumpManager * get();
     void init(const char * findex, const char * fdata);
     void halt();
-    GumpInfo get_gump(uo_dword i);
+    GumpInfo get_gump(uo_dword i, unsigned int forced_color = 0);
     unsigned int unload_gump(uo_dword i);
     unsigned int clean_cache();
     unsigned int cache_size() { return _cache_size; }
@@ -33,7 +33,7 @@ private:
     GumpManager() {}
     GumpManager(const GumpManager &g) { UNREFERENCED_PARAMETER(g); }
     void operator = (const GumpManager & g) { UNREFERENCED_PARAMETER(g); }
-    GumpInfo _load_gump(uo_dword i);
+    GumpInfo _load_gump(uo_dword i, unsigned int forced_color);
     static GumpManager _gm;
     FILE * _findex, * _fdata;
     std::map<uo_dword, GumpInfo> gump_cache, gump_inuse;

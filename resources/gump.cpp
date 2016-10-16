@@ -61,7 +61,10 @@ void GumpManager::halt() {
     fclose(_fdata);
 }
 
-GumpInfo GumpManager::get_gump(uo_dword i) {
+GumpInfo GumpManager::get_gump(uo_dword i, unsigned int forced_color) {
+    if (forced_color > 0) {
+        return _load_gump(i, forced_color);
+    }
     // First check if gump is loaded.
     if (gump_inuse.count(i) == 1) {
         return gump_inuse[i];
@@ -74,7 +77,7 @@ GumpInfo GumpManager::get_gump(uo_dword i) {
         _inuse_size += gump_info.memory;
         return gump_info;
     }
-    GumpInfo gump_info = _load_gump(i);
+    GumpInfo gump_info = _load_gump(i, 0);
     _inuse_size += gump_info.memory;
     return gump_info;
 }
@@ -101,7 +104,7 @@ unsigned int GumpManager::clean_cache() {
     return cs;
 }
 
-GumpInfo GumpManager::_load_gump(uo_dword i) {
+GumpInfo GumpManager::_load_gump(uo_dword i, unsigned int forced_color) {
     GumpIdxEntry entry(_findex, i);
     uo_byte * gumpdata = new uo_byte[entry.length];
     fseek(_fdata, entry.lookup, 0);
@@ -124,6 +127,9 @@ GumpInfo GumpManager::_load_gump(uo_dword i) {
             memcpy(&readed_color, raw, sizeof(uo_uword));
             memcpy(&counter, &raw[2], sizeof(uo_uword));
             color = (unsigned int)color16_to_color32(readed_color);
+            if (forced_color != 0 && color != 0) {
+                color = forced_color;
+            }
             if (color) {
                 color |= 0xFF000000;
             }

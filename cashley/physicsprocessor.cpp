@@ -15,7 +15,6 @@ void PhysicsProcessor::run_tick(unsigned int delay) {
     v = this->_engine->get_entities_for(f);
     VideoEngine * video = VideoEngine::get();
     video->clear();
-    video->prepare_for_physics();
     for (unsigned int i = 0; i < v.size(); i++) {
         v[i]->get_component<PhysicalComponent>()->display();
     }

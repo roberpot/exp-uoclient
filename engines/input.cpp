@@ -62,6 +62,5 @@ void InputEngine::run() {
     } else {
         _mouse_status &= ~INPUT_RBUTTON;
     }
-
     _collide_color = VideoEngine::get()->get_collor_at_position(_x, _y);
 }

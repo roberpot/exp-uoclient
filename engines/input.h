@@ -20,6 +20,8 @@ public:
     void init_subsystem();
     void halt_subsystem();
     void run();
+    inline int get_x() { return _x; }
+    inline int get_y() { return _y; }
     inline bool lbutton_down() { return bool(_mouse_status & INPUT_LBUTTON); }
     inline bool mbutton_down() { return bool(_mouse_status & INPUT_MBUTTON); }
     inline bool rbutton_down() { return bool(_mouse_status & INPUT_RBUTTON); }

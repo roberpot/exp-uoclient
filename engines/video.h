@@ -16,9 +16,6 @@ public:
     void halt_subsystem();
     void run();
     void clear();
-    void prepare_for_graphics();
-    void prepare_for_physics();
-    unsigned int gen_collide_color();
     unsigned int get_collor_at_position(int x, int y);
 private:
     VideoEngine() {}
@@ -28,7 +25,6 @@ private:
 
     SDL_Window * window;
     SDL_GLContext glcontext;
-    unsigned int next_collide_color;
 };
 
 #endif //__UONEWCLIENT_VIDEO_H

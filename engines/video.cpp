@@ -50,7 +50,6 @@ void VideoEngine::init_subsystem() {
     glOrtho ( 0,640,480 , 0, 100000, -100000 ) ;
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    next_collide_color = 0;
 }
 
 void VideoEngine::halt_subsystem() {
@@ -66,30 +65,15 @@ void VideoEngine::run() {
 void VideoEngine::clear() {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
-}
-
-
-void VideoEngine::prepare_for_graphics() {
     glColor4f(1.0, 0.0, 0.0, 1.0);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-void VideoEngine::prepare_for_physics() {
-    glColor4f(1.0, 0.0, 0.0, 1.0);
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-unsigned int VideoEngine::gen_collide_color() {
-    unsigned int ret = next_collide_color++;
-    return (ret << 8) & 0xFFFFFF00;
 }
 
 unsigned int VideoEngine::get_collor_at_position(int x, int y) {
     unsigned int color;
+    color = 0;
     glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, &color);
     return color;
 }

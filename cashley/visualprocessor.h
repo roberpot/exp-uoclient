@@ -2,8 +2,8 @@
 // Created by rot on 11/10/16.
 //
 
-#ifndef UONEWCLIENT_VISUALPROCESSOR_H
-#define UONEWCLIENT_VISUALPROCESSOR_H
+#ifndef __UONEWCLIENT_VISUALPROCESSOR_H
+#define __UONEWCLIENT_VISUALPROCESSOR_H
 
 #include <cashley/cashley.h>
 
@@ -15,4 +15,4 @@ class VisualProcessor : public CAshley::Processor {
         CASHLEY_PROCESSOR
 };
 
-#endif //UONEWCLIENT_VISUALPROCESSOR_H
+#endif //__UONEWCLIENT_VISUALPROCESSOR_H

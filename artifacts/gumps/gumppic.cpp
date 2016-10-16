@@ -19,7 +19,8 @@ void GumpPic::init(Form * f, uo_dword gumpid, int x, int y, int z) {
     get_component<VisualComponent>()->setup(x, y, ginfo.width, ginfo.height, z, ginfo.texture, 0);
     // Physical component.
     add_component<PhysicalComponent>();
-    get_component<PhysicalComponent>()->setup();
+    GumpInfo ginfo2 = gumpmanager->get_gump(_gump_id, get_component<PhysicalComponent>()->get_color());
+    get_component<PhysicalComponent>()->setup(x, y, ginfo2.width, ginfo2.height, z, ginfo2.texture);
 }
 
 void GumpPic::shutdown() {

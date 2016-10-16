@@ -10,6 +10,8 @@
 Form * form_login(CAshley::Engine * e) {
     Form * f = new Form(e);
     GumpPic * gumpic = new GumpPic;
+    gumpic->init(f, 9002, 0, 0, 0);
+    gumpic = new GumpPic;
     gumpic->init(f, 6, 50, 50, 0);
     gumpic = new GumpPic;
     gumpic->init(f, 12, 150, 150, 0);
