@@ -7,8 +7,6 @@
 
 #include <cashley/cashley.h>
 
-#include "../common/debug.h"
-
 class VisualProcessor : public CAshley::Processor {
     public:
         virtual void run_tick(unsigned int delay);

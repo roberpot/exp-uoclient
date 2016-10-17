@@ -1,6 +1,5 @@
 #include <iostream>
 
-#include <GL/gl.h>
 #include <SDL2/SDL.h>
 #include <cashley/cashley.h>
 
@@ -26,11 +25,11 @@ int main(int argc, char * argv[]) {
     GumpManager * gumpmanager = GumpManager::get();
     FontManager * fontmanager = FontManager::get();
     CAshley::Engine * engine = new CAshley::Engine;
-    engine->add_processor<PhysicsProcessor>();
+    engine->add_processor<PhysicsProcessor>(0);
     engine->get_processor<PhysicsProcessor>()->activate();
-    engine->add_processor<InputProcessor>();
+    engine->add_processor<InputProcessor>(1);
     engine->get_processor<InputProcessor>()->activate();
-    engine->add_processor<VisualProcessor>();
+    engine->add_processor<VisualProcessor>(2);
     engine->get_processor<VisualProcessor>()->activate();
 
     // Initialize systems.
@@ -45,12 +44,20 @@ int main(int argc, char * argv[]) {
     Form * loginform = form_login(engine);
     loginform->enable();
 
+    unsigned int ticks;
+
     while (input->continue_execution()) {
-        input->run();
+        ticks = SDL_GetTicks();
         engine->run_tick(1);
+        SDL_Delay(MAX(50 + ticks - SDL_GetTicks(), 0));
     }
+//    delete loginform;
+//    delete engine;
+//    gumpmanager->halt();
+    fontmanager->halt();
     video->halt_subsystem();
     input->halt_subsystem();
+    gumpmanager->halt();
     debug_halt();
     return 0;
 }

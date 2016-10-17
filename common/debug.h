@@ -5,9 +5,27 @@
 #ifndef __UONEWCLIENT_DEBUG_H
 #define __UONEWCLIENT_DEBUG_H
 
+#ifndef DEBUG_MODE
+#define DEBUG_MODE 0
+#endif //DEBUG_MODE
+
 #if DEBUG_MODE > 0
 #include <string>
 #include <sstream>
+#define _DBG_MSG(x, y) { \
+    std::stringstream s; \
+    s << x << "::" << __FILE__ << "(" << __LINE__ << ")::" << __func__ << ": " << y; \
+    _debug_print(s.str().c_str()); \
+}
+#define debug_init() _debug_init()
+#define debug_halt() _debug_halt()
+void _debug_init();
+void _debug_halt();
+void _debug_print(const char * buffer);
+#else //DEBUG_MODE > 0
+#define _DBG_MSG(x, y)
+#define debug_init()
+#define debug_halt()
 #endif
 
 #ifdef UNREFERENCED_PARAMETER
@@ -24,27 +42,6 @@ void __##x##_unused_function() { \
     UNREFERENCED_PARAMETER(f); \
 } \
 void __##x##_unused_function() __attribute__ ((unused))
-
-#ifndef DEBUG_MODE
-#define DEBUG_MODE 0
-#endif //DEBUG_MODE
-
-#if DEBUG_MODE > 0
-#define _DBG_MSG(x, y) { \
-    std::stringstream s; \
-    s << x << "::" << __FILE__ << "(" << __LINE__ << ")::" << __func__ << ": " << y; \
-    _debug_print(s.str().c_str()); \
-}
-#define debug_init() _debug_init()
-#define debug_halt() _debug_halt()
-void _debug_init();
-void _debug_halt();
-void _debug_print(const char * buffer);
-#else //DEBUG_MODE > 0
-#define _DBG_MSG(x, y)
-#define debug_init()
-#define debug_halt()
-#endif //DEBUG_MODE > 0
 
 #define DEBUG_ERROR(x)
 #define DEBUG_WARNING(x)
@@ -72,5 +69,7 @@ void _debug_print(const char * buffer);
 #undef DEBUG_MSG
 #define DEBUG_MSG(x) _DBG_MSG("[MSG]", x)
 #endif
+
+#define MAX(x, y) (((x)>(y))?(x):(y))
 
 #endif //__UONEWCLIENT_DEBUG_H

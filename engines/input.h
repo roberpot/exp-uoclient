@@ -26,7 +26,7 @@ public:
     inline bool mbutton_down() { return bool(_mouse_status & INPUT_MBUTTON); }
     inline bool rbutton_down() { return bool(_mouse_status & INPUT_RBUTTON); }
     inline bool continue_execution() { return _continue_execution; }
-    inline bool collide_color() { return _collide_color; }
+    inline unsigned int collide_color() { return _collide_color; }
 private:
     InputEngine();
     InputEngine(const InputEngine &v) { UNREFERENCED_PARAMETER(v); }

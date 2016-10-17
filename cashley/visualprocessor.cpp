@@ -5,6 +5,7 @@
 #include <GL/gl.h>
 
 #include "../engines/video.h"
+#include "../common/debug.h"
 #include "visualprocessor.h"
 #include "visualcomponent.h"
 
@@ -21,5 +22,5 @@ void VisualProcessor::run_tick(unsigned int delay) {
     for (unsigned int i = 0; i < v.size(); i++) {
         v[i]->get_component<VisualComponent>()->display();
     }
-//    video->run();
+    video->run();
 }

@@ -10,7 +10,7 @@
 #include "../engines/input.h"
 
 
-unsigned int PhysicalComponent::_color_serial = 0;
+unsigned int PhysicalComponent::_color_serial = 0xFF000000;
 
 
 void PhysicalComponent::init() {
@@ -57,7 +57,6 @@ void PhysicalComponent::move(int x, int y, int z) {
 
 void PhysicalComponent::display() {
     glCallList(_displaylist);
-//    this->get_owner()->get_component<VisualComponent>()->display();
 }
 
 void PhysicalComponent::run(InputEngine * input) {

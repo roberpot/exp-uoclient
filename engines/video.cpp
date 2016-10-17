@@ -17,13 +17,15 @@ void VideoEngine::init_subsystem() {
         DEBUG_ERROR("Unable to init SDL: " << SDL_GetError());
         throw 1;
     }
+    w = 640;
+    h = 480;
     // create a new window
     window = SDL_CreateWindow(
             "Exp UO Client",                  // window title
             SDL_WINDOWPOS_UNDEFINED,           // initial x position
             SDL_WINDOWPOS_UNDEFINED,           // initial y position
-            640,                               // width, in pixels
-            480,                               // height, in pixels
+            w,                               // width, in pixels
+            h,                               // height, in pixels
             SDL_WINDOW_OPENGL                  // flags - see below
     );
 
@@ -34,20 +36,20 @@ void VideoEngine::init_subsystem() {
 
     // Initialize GL.
     glcontext = SDL_GL_CreateContext(window);
-
+//    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     glClearColor(1, 1, 1, 0);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glEnable(GL_TEXTURE_2D);
     glClearDepth(1.0f);                   // Set background depth to farthest
-    glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
+//    glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
     glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
     glShadeModel(GL_SMOOTH);   // Enable smooth shading
     glDisable(GL_LIGHTING);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
-    glViewport (0 , 0 , 640, 480 ) ;
+    glViewport (0 , 0 , w, h ) ;
     glMatrixMode ( GL_PROJECTION ) ;
     glLoadIdentity ();
-    glOrtho ( 0,640,480 , 0, 100000, -100000 ) ;
+    glOrtho (0, w, h, 0, 100000, -100000 ) ;
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
@@ -71,9 +73,15 @@ void VideoEngine::clear() {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
+void VideoEngine::force_flush() {
+    glFinish();
+}
+
 unsigned int VideoEngine::get_collor_at_position(int x, int y) {
     unsigned int color;
     color = 0;
-    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8, &color);
+    glReadBuffer(GL_BACK);
+    glFinish();
+    glReadPixels(x, h - y, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, &color);
     return color;
 }
