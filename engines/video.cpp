@@ -45,6 +45,7 @@ void VideoEngine::init_subsystem() {
     glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
     glShadeModel(GL_SMOOTH);   // Enable smooth shading
     glDisable(GL_LIGHTING);
+    glDisable(GL_DEPTH_TEST);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
     glViewport (0 , 0 , w, h ) ;
     glMatrixMode ( GL_PROJECTION ) ;

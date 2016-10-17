@@ -7,6 +7,7 @@
 
 #include "basegump.h"
 #include "gumppic.h"
+#include "resizepic.h"
 #include "text.h"
 
 #endif //__UONEWCLIENT_GUMPS_H
