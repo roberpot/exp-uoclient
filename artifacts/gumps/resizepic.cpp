@@ -23,6 +23,16 @@ void ResizePic::init(Form * f, uo_dword gumpid, int x, int y, int z, int w, int 
     _prerender(_ginfo, w, h);
     glEndList();
     vcomp->setup_with_dl(x, y, z, _dl);
+//    add_component<PhysicalComponent>();
+//    PhysicalComponent * pcomp = get_component<PhysicalComponent>();
+//    for (unsigned int i = 0; i < 9; i++) {
+//        _ginfoflat[i] = gumpmanager->get_gump(gumpid + i, pcomp->get_color());
+//    }
+//    _dl2 = glGenLists(1);
+//    glNewList(_dl2, GL_COMPILE);
+//    _prerender(_ginfoflat, w, h);
+//    glEndList();
+//    pcomp->setup_w
 }
 
 void ResizePic::_prerender(GumpInfo * ginfo, int w, int h) {

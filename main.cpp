@@ -44,12 +44,13 @@ int main(int argc, char * argv[]) {
     Form * loginform = form_login(engine);
     loginform->enable();
 
-    unsigned int ticks;
+    unsigned int ticks_init, ticks_end;
 
     while (input->continue_execution()) {
-        ticks = SDL_GetTicks();
+        ticks_init = SDL_GetTicks();
         engine->run_tick(1);
-        SDL_Delay(MAX(50 + ticks - SDL_GetTicks(), 0));
+        ticks_end = SDL_GetTicks();
+        SDL_Delay(MAX(50 + ticks_init, ticks_end) - ticks_end);
     }
 //    delete loginform;
 //    delete engine;
