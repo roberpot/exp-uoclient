@@ -1,0 +1,11 @@
+//
+// Created by rot on 18/10/16.
+//
+
+#ifndef __UONEWCLIENT_TEXTURELOADER_H
+#define __UONEWCLIENT_TEXTURELOADER_H
+
+extern const char * TEXTURE_FRAGMENT_SHADER;
+extern const char * TEXTURE_VERTEX_SHADER;
+
+#endif //__UONEWCLIENT_TEXTURELOADER_H

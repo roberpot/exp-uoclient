@@ -39,11 +39,11 @@ void VisualComponent::move(int x, int y, int z) {
     glNewList(_displaylist, GL_COMPILE);
     if (data->flags & GC_F_INTERNAL_DL) {
         glPushMatrix();
-        glTranslated(x, y, data->z);
+        glTranslated(x, y, z);
         glCallList(data->internal_dl);
         glPopMatrix();
     } else {
-        display_textured_square(x, y, data->w, data->h, data->z, data->texture);
+        display_textured_square(x, y, data->w, data->h, z, data->texture);
     }
     glEndList();
 }

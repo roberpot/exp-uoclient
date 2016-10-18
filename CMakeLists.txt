@@ -10,6 +10,10 @@ FIND_PACKAGE(SDL2_image REQUIRED)
 FIND_PACKAGE(SDL2_ttf REQUIRED)
 FIND_PACKAGE(cashley REQUIRED)
 
+IF(CMAKE_COMPILER_IS_GNUCC)
+    FIND_PACKAGE(GLEW REQUIRED)
+ENDIF(CMAKE_COMPILER_IS_GNUCC)
+
 SET(SOURCE_FILES
     common/colorutils.h
     common/debug.cpp
@@ -35,25 +39,49 @@ SET(SOURCE_FILES
         artifacts/gumps/gumppic.cpp
         artifacts/gumps/gumppic.h
         cashley/visualprocessor.cpp
-        cashley/visualprocessor.h artifacts/form.cpp artifacts/form.h artifacts/gumps/basegump.cpp artifacts/gumps/basegump.h artifacts/artifact.cpp artifacts/artifact.h engines/input.cpp engines/input.h contrib/form_login.cpp contrib/form_login.h artifacts/gumps/gumps.h artifacts/gumps/text.cpp artifacts/gumps/text.h cashley/physicsprocessor.cpp cashley/physicsprocessor.h cashley/inputprocessor.cpp cashley/inputprocessor.h artifacts/gumps/resizepic.cpp artifacts/gumps/resizepic.h)
+        cashley/visualprocessor.h artifacts/form.cpp artifacts/form.h artifacts/gumps/basegump.cpp artifacts/gumps/basegump.h artifacts/artifact.cpp artifacts/artifact.h engines/input.cpp engines/input.h contrib/form_login.cpp contrib/form_login.h artifacts/gumps/gumps.h artifacts/gumps/text.cpp artifacts/gumps/text.h cashley/physicsprocessor.cpp cashley/physicsprocessor.h cashley/inputprocessor.cpp cashley/inputprocessor.h artifacts/gumps/resizepic.cpp artifacts/gumps/resizepic.h shaders/textureloader.h shaders/textureloader.cpp)
 
 add_executable(uonewclient_release ${SOURCE_FILES})
-TARGET_LINK_LIBRARIES(uonewclient_release
-    ${SDL2_LIBRARY}
-    ${SDL2_IMAGE_LIBRARIES}
-    ${SDL2_TTF_LIBRARIES}
-    ${CASHLEY_LIBRARY}
-    ${OPENGL_LIBRARIES}
-)
+
+IF(CMAKE_COMPILER_IS_GNUCC)
+    TARGET_LINK_LIBRARIES(uonewclient_release
+        ${SDL2_LIBRARY}
+        ${SDL2_IMAGE_LIBRARIES}
+        ${SDL2_TTF_LIBRARIES}
+        ${CASHLEY_LIBRARY}
+        ${OPENGL_LIBRARIES}
+        ${GLEW_LIBRARIES}
+    )
+ELSE(CMAKE_COMPILER_IS_GNUCC)
+    TARGET_LINK_LIBRARIES(uonewclient_release
+        ${SDL2_LIBRARY}
+        ${SDL2_IMAGE_LIBRARIES}
+        ${SDL2_TTF_LIBRARIES}
+        ${CASHLEY_LIBRARY}
+        ${OPENGL_LIBRARIES}
+    )
+ENDIF(CMAKE_COMPILER_IS_GNUCC)
+
 TARGET_COMPILE_DEFINITIONS(uonewclient_release PUBLIC DEBUG_MODE=0)
 
 add_executable(uonewclient_debug ${SOURCE_FILES})
 
-TARGET_LINK_LIBRARIES(uonewclient_debug
-    ${SDL2_LIBRARY}
-    ${SDL2_IMAGE_LIBRARIES}
-    ${SDL2_TTF_LIBRARIES}
-    ${CASHLEY_LIBRARY}
-    ${OPENGL_LIBRARIES}
-)
+IF(CMAKE_COMPILER_IS_GNUCC)
+    TARGET_LINK_LIBRARIES(uonewclient_debug
+        ${SDL2_LIBRARY}
+        ${SDL2_IMAGE_LIBRARIES}
+        ${SDL2_TTF_LIBRARIES}
+        ${CASHLEY_LIBRARY}
+        ${OPENGL_LIBRARIES}
+        ${GLEW_LIBRARIES}
+    )
+ELSE(CMAKE_COMPILER_IS_GNUCC)
+    TARGET_LINK_LIBRARIES(uonewclient_debug
+        ${SDL2_LIBRARY}
+        ${SDL2_IMAGE_LIBRARIES}
+        ${SDL2_TTF_LIBRARIES}
+        ${CASHLEY_LIBRARY}
+        ${OPENGL_LIBRARIES}
+    )
+ENDIF(CMAKE_COMPILER_IS_GNUCC)
 TARGET_COMPILE_DEFINITIONS (uonewclient_debug PUBLIC DEBUG_MODE=5)

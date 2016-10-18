@@ -14,7 +14,7 @@
 
 class ResizePic : public CAshley::Entity, public BaseGump {
 public:
-    void init(Form * f, uo_dword gumpid, int x, int y, int w, int h, int z);
+    void init(Form * f, uo_dword gumpid, int x, int y, int z, int w, int h);
     void shutdown();
 private:
     void _prerender(GumpInfo * ginfo, int w, int h);

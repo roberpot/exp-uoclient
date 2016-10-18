@@ -1,9 +1,15 @@
 #include <iostream>
 #include <iomanip>
+
+
+#include <GL/glew.h>
 #include <GL/gl.h>
+
+#include "../engines/video.h"
 
 #include "debug.h"
 #include "utils.h"
+
 
 unsigned int change_endian(unsigned int i)
 {
