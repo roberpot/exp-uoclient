@@ -6,6 +6,7 @@
 
 #include "input.h"
 #include "video.h"
+#include "../common/utils.h"
 
 
 InputEngine::InputEngine() {
@@ -47,23 +48,58 @@ void InputEngine::run() {
         } // end switch
     } // end of message processing
     unsigned int buttons = SDL_GetMouseState(&_x, &_y);
+    unsigned short old_status = _mouse_status;
     if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-        _mouse_status |= INPUT_LBUTTON;
+        UNSET_FLAG(_mouse_status, INPUT_LRELEASE);
+        SET_FLAG(_mouse_status, INPUT_LBUTTON);
+        if (!(old_status & INPUT_LBUTTON)) {
+            SET_FLAG(_mouse_status, INPUT_LCLICK);
+        } else {
+            UNSET_FLAG(_mouse_status, INPUT_LCLICK);
+        }
     } else {
-        _mouse_status &= ~INPUT_LBUTTON;
+        UNSET_FLAG(_mouse_status, INPUT_LBUTTON);
+        UNSET_FLAG(_mouse_status, INPUT_LCLICK);
+        if (old_status & INPUT_LBUTTON) {
+            SET_FLAG(_mouse_status, INPUT_LRELEASE);
+        } else {
+            UNSET_FLAG(_mouse_status, INPUT_LRELEASE);
+        }
     }
     if (buttons & SDL_BUTTON(SDL_BUTTON_MIDDLE)) {
-        _mouse_status |= INPUT_MBUTTON;
+        UNSET_FLAG(_mouse_status, INPUT_MRELEASE);
+        SET_FLAG(_mouse_status, INPUT_MBUTTON);
+        if (!(old_status & INPUT_MBUTTON)) {
+            SET_FLAG(_mouse_status, INPUT_MCLICK);
+        } else {
+            UNSET_FLAG(_mouse_status, INPUT_MCLICK);
+        }
     } else {
-        _mouse_status &= ~INPUT_MBUTTON;
+        UNSET_FLAG(_mouse_status, INPUT_MBUTTON);
+        UNSET_FLAG(_mouse_status, INPUT_MCLICK);
+        if (old_status & INPUT_MBUTTON) {
+            SET_FLAG(_mouse_status, INPUT_MRELEASE);
+        } else {
+            UNSET_FLAG(_mouse_status, INPUT_MRELEASE);
+        }
     }
     if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
-        _mouse_status |= INPUT_RBUTTON;
+        UNSET_FLAG(_mouse_status, INPUT_RRELEASE);
+        SET_FLAG(_mouse_status, INPUT_RBUTTON);
+        if (!(old_status & INPUT_RBUTTON)) {
+            SET_FLAG(_mouse_status, INPUT_RCLICK);
+        } else {
+            UNSET_FLAG(_mouse_status, INPUT_RCLICK);
+        }
     } else {
-        _mouse_status &= ~INPUT_RBUTTON;
+        UNSET_FLAG(_mouse_status, INPUT_RBUTTON);
+        UNSET_FLAG(_mouse_status, INPUT_RCLICK);
+        if (old_status & INPUT_RBUTTON) {
+            SET_FLAG(_mouse_status, INPUT_RRELEASE);
+        } else {
+            UNSET_FLAG(_mouse_status, INPUT_RRELEASE);
+        }
     }
+    _ticks_update = SDL_GetTicks();
     _collide_color = VideoEngine::get()->get_collor_at_position(_x, _y);
-    if (_mouse_status & INPUT_RBUTTON) {
-        DEBUG_MSG("COLOR READED: 0x" << std::hex << _collide_color);
-    }
 }
