@@ -17,9 +17,7 @@ public:
     void halt_subsystem();
     void run();
     void clear();
-    void force_flush();
     unsigned int get_collor_at_position(int x, int y);
-    inline int get_program_object() { return _programobject; }
 private:
     VideoEngine() {}
     VideoEngine(const VideoEngine &v) { UNREFERENCED_PARAMETER(v); }

@@ -38,19 +38,17 @@ void VideoEngine::init_subsystem() {
         throw 1;
     }
     DEBUG_INFO("Initialize window... OK");
-
     DEBUG_INFO("Initialize GL context...");
     // Initialize GL.
     glcontext = SDL_GL_CreateContext(window);
     glClearColor(1, 1, 1, 0);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glEnable(GL_TEXTURE_2D);
-    glClearDepth(1.0f);                   // Set background depth to farthest
-    glEnable(GL_DEPTH_TEST);   // Enable depth testing for z-culling
-    glDepthFunc(GL_LEQUAL);    // Set the type of depth-test
-    glShadeModel(GL_SMOOTH);   // Enable smooth shading
+    glClearDepth(1.0f);      // Set background depth to farthest
+    glEnable(GL_DEPTH_TEST); // Enable depth testing for z-culling
+    glDepthFunc(GL_LEQUAL);  // Set the type of depth-test
+    glShadeModel(GL_SMOOTH); // Enable smooth shading
     glDisable(GL_LIGHTING);
-//    glEnable(GL_DEPTH_TEST);
     glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);  // Nice perspective corrections
     glViewport (0 , 0 , w, h ) ;
     glMatrixMode ( GL_PROJECTION ) ;
@@ -59,6 +57,7 @@ void VideoEngine::init_subsystem() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+    glReadBuffer(GL_BACK);
     DEBUG_INFO("Initialize GL context... OK");
     DEBUG_INFO("Initialize shaders...");
     compile_shaders();
@@ -138,19 +137,11 @@ void VideoEngine::clear() {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
     glColor4f(1.0, 0.0, 0.0, 1.0);
-//    glEnable(GL_BLEND);
-//    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-}
-
-void VideoEngine::force_flush() {
-    glFinish();
 }
 
 unsigned int VideoEngine::get_collor_at_position(int x, int y) {
     unsigned int color;
     color = 0;
-    glReadBuffer(GL_BACK);
-    glFinish();
     glReadPixels(x, h - y, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, &color);
     return color;
 }

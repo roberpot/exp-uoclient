@@ -14,6 +14,7 @@
 unsigned int PhysicalComponent::_color_serial = 0xFF000000;
 
 #define MAX_WAIT_FOR_DCLICK  500
+#define MAX_WAIT_FOR_DRAG    200
 
 
 void PhysicalComponent::init() {
@@ -48,7 +49,7 @@ void PhysicalComponent::setup_with_dl(int x, int y, int z, unsigned int dl, unsi
     data->w = 0;
     data->h = 0;
     data->texture = 0;
-    data->flags = flags;
+    data->flags = flags | GC_F_INTERNAL_DL;
     data->internal_dl = dl;
     move(x, y, z);
 }
@@ -148,6 +149,10 @@ void PhysicalComponent::run(InputEngine * input) {
                 }
             } break;
             case LPUSHED_OVER: {
+                if (!(data->flags & PC_F_DRAG_DELAYED) || (input->get_ticks() - _last_action_ticks > MAX_WAIT_FOR_DRAG)) {
+                    // call artifact drag.
+                    DEBUG_INFO("DRAG: " << this);
+                }
                 switch(m) {
                     case _BLUR: {
                         _status = LPUSHED_BLUR;

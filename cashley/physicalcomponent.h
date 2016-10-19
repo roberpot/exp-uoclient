@@ -9,6 +9,7 @@
 
 #define PC_F_NONE         0x0000
 #define PC_F_INTERNAL_DL  0x0001
+#define PC_F_DRAG_DELAYED 0x0002
 
 
 class PhysicalComponentData {
