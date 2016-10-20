@@ -56,9 +56,10 @@ void ResizePic::_prerender(GumpInfo * ginfo, int w, int h) {
     // Left.
     display_textured_square(0, intery1, ginfo[3].width, intery2 - intery1, 0, ginfo[3].texture);
     // Right.
-    display_textured_square(interx2 - 1, intery1, ginfo[5].width, intery2 - intery1, 0, ginfo[5].texture);
+    display_textured_square(interx2, intery1, ginfo[5].width, intery2 - intery1, 0, ginfo[5].texture);
     // Center
-    display_textured_square(interx1, intery1, interx2 - interx1, intery2 - intery1, 0, ginfo[4].texture);
+    DEBUG_INFO("X: " << interx1 << " Y: " << intery1 << " W: " << (interx2-interx1) << " H: " << (intery2 - intery1) << " TEX W: " << ginfo[4].width << " TEX H: " << ginfo[4].height);
+    display_textured_square(interx1, intery1, interx2 - interx1, intery2 - intery1, 0, ginfo[4].texture, ginfo[4].width, ginfo[4].height);
 }
 
 void ResizePic::shutdown() {

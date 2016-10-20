@@ -126,7 +126,7 @@ GumpInfo GumpManager::_load_gump(uo_dword i, unsigned int forced_color) {
             //print_raw(raw, 4);
             memcpy(&readed_color, raw, sizeof(uo_uword));
             memcpy(&counter, &raw[2], sizeof(uo_uword));
-            color = (unsigned int)color16_to_color32(readed_color);
+            color = color16_to_color32(readed_color);
             if (forced_color != 0 && color != 0) {
                 color = forced_color;
             }
@@ -144,7 +144,7 @@ GumpInfo GumpManager::_load_gump(uo_dword i, unsigned int forced_color) {
     gump_info.texture = generate_texture_from_raw(entry.width, entry.height, rawsurface);
     gump_info.width = entry.width;
     gump_info.height = entry.height;
-    gump_info.memory = entry.width * entry.height * 4;
+    gump_info.memory = (unsigned int)(entry.width * entry.height * 4);
     delete rawsurface;
     return gump_info;
 }

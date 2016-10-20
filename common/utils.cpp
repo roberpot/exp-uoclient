@@ -49,15 +49,22 @@ std::string int2hex_string(unsigned int i) {
     return a;
 }
 
-void display_textured_square(int x, int y, int w, int h, int z, unsigned int t) {
+void display_textured_square(int x, int y, int w, int h, int z, unsigned int t, int tw, int th) {
+    double twcoor = 1, thcoor = 1;
+    if (tw) {
+        twcoor = w / tw;
+    }
+    if (th) {
+        thcoor = h / th;
+    }
     glPushMatrix();
     glTranslated(x, y, z);
     glBindTexture(GL_TEXTURE_2D, t);
     glBegin(GL_QUADS);
     glTexCoord2d(0, 0); glVertex2d(0, 0);
-    glTexCoord2d(0, 1); glVertex2d(0, h);
-    glTexCoord2d(1, 1); glVertex2d(w, h);
-    glTexCoord2d(1, 0); glVertex2d(w, 0);
+    glTexCoord2d(0, thcoor); glVertex2d(0, h);
+    glTexCoord2d(twcoor, thcoor); glVertex2d(w, h);
+    glTexCoord2d(twcoor, 0); glVertex2d(w, 0);
     glEnd();
     glPopMatrix();
 }
