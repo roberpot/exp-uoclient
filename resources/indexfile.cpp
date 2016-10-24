@@ -42,6 +42,15 @@ void IndexFile::init(const char * idxfile, const char * mulfile) {
     fread((void*)_index, _idxlen, 1, _idxfile);
 }
 
+void IndexFile::halt() {
+    if (_idxfile) {
+        fclose(_idxfile);
+    }
+    if (_mulfile) {
+        fclose(_mulfile);
+    }
+}
+
 bool IndexFile::is_valid_index(uo_dword index) {
     if (index < 0 || (unsigned int)index >= _count) {
         return false;
@@ -78,4 +87,8 @@ Entry3D IndexFile::get_entry(uo_dword index) {
     Entry3D e = _index[index];
     // Always not patched.
     return e;
+}
+
+void IndexFile::read(uo_char ** buffer, Entry3D e) {
+    fread(buffer, sizeof(uo_char), e.length, _mulfile);
 }
