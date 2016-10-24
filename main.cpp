@@ -8,6 +8,7 @@
 #include "engines/input.h"
 #include "resources/gump.h"
 #include "resources/font.h"
+#include "resources/hues.h"
 #include "cashley/inputprocessor.h"
 #include "cashley/physicsprocessor.h"
 #include "cashley/visualprocessor.h"
@@ -24,13 +25,7 @@ int main(int argc, char * argv[]) {
     // Resources.
     GumpManager * gumpmanager = GumpManager::get();
     FontManager * fontmanager = FontManager::get();
-    CAshley::Engine * engine = new CAshley::Engine;
-    engine->add_processor<PhysicsProcessor>(0);
-    engine->get_processor<PhysicsProcessor>()->activate();
-    engine->add_processor<InputProcessor>(1);
-    engine->get_processor<InputProcessor>()->activate();
-    engine->add_processor<VisualProcessor>(2);
-    engine->get_processor<VisualProcessor>()->activate();
+    HuesManager * huesmanager = HuesManager::get();
 
     // Initialize systems.
     SDL_Init(0);
@@ -40,6 +35,16 @@ int main(int argc, char * argv[]) {
     // Initialize resources.
     gumpmanager->init("gumpidx.mul", "gumpart.mul");
     fontmanager->init("fonts.mul");
+    huesmanager->init("hues.mul");
+
+    // IUnitialize cashley engine.
+    CAshley::Engine * engine = new CAshley::Engine;
+    engine->add_processor<PhysicsProcessor>(0);
+    engine->get_processor<PhysicsProcessor>()->activate();
+    engine->add_processor<InputProcessor>(1);
+    engine->get_processor<InputProcessor>()->activate();
+    engine->add_processor<VisualProcessor>(2);
+    engine->get_processor<VisualProcessor>()->activate();
 
     Form * loginform = form_login(engine);
     loginform->enable();
@@ -52,8 +57,9 @@ int main(int argc, char * argv[]) {
         ticks_end = SDL_GetTicks();
         SDL_Delay(MAX(50 + ticks_init, ticks_end) - ticks_end);
     }
-//    delete loginform;
-//    delete engine;
+    loginform->disable();
+    delete loginform;
+    delete engine;
 //    gumpmanager->halt();
     fontmanager->halt();
     video->halt_subsystem();

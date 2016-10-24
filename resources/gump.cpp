@@ -50,16 +50,40 @@ GumpManager * GumpManager::get() {
 }
 
 void GumpManager::init(const char * findex, const char * fdata) {
-    _findex = fopen(findex, "rb");
-    _fdata = fopen(fdata, "rb");
-    _cache_size = 0;
-    _inuse_size = 0;
+//    _findex = fopen(findex, "rb");
+//    _fdata = fopen(fdata, "rb");
+//    _cache_size = 0;
+//    _inuse_size = 0;
+    IndexFile::init(findex, fdata);
 }
 
 void GumpManager::halt() {
     fclose(_findex);
     fclose(_fdata);
 }
+
+bool GumpManager::is_valid_index(uo_dword index) {
+    if (!IndexFile::is_valid_index(index)) {
+        return false;
+    }
+
+    Entry3D e = get_entry(index);
+
+    if (e.extra == -1) {
+        return false;
+    }
+
+    int width = (e.extra >> 16) & 0xFFFF;
+    int height = e.extra & 0xFFFF;
+    if (width <= 0 || height <= 0) {
+        return false;
+    }
+
+    return true;
+}
+
+char * get_raw_gump(uo_dword index) {}
+
 
 GumpInfo GumpManager::get_gump(uo_dword i, unsigned int forced_color) {
     if (forced_color > 0) {
@@ -81,6 +105,10 @@ GumpInfo GumpManager::get_gump(uo_dword i, unsigned int forced_color) {
     _inuse_size += gump_info.memory;
     return gump_info;
 }
+
+//GumpInfo GumpManager::get_gump__(uo_dword i, HuesEntry hues, bool onlyhuegraypixels, unsigned int forced_color=0) {
+//
+//}
 
 unsigned int GumpManager::unload_gump(uo_dword i) {
     if (gump_inuse.count(i) != 1) {
