@@ -17,9 +17,9 @@ public:
     void init(Form * f, uo_dword gumpid, int x, int y, int z, int w, int h);
     void shutdown();
 private:
-    void _prerender(GumpInfo * ginfo, int w, int h);
-    uo_dword _gump_id;
-    GumpInfo _ginfo[9], _ginfoflat[9];
+    void _prerender(int w, int h, unsigned int color=0);
+    GumpInfoRef _ginforefs[9];
+    unsigned int _flattextures[9];
     unsigned int _dl, _dl2;
 };
 

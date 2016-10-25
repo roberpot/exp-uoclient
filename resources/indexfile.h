@@ -16,7 +16,7 @@ public:
     virtual void halt();
     virtual bool is_valid_index(uo_dword index);
     Entry3D get_entry(uo_dword index);
-    void read(uo_char ** buffer, Entry3D e);
+    void read(uo_byte * buffer, Entry3D e);
 protected:
     FILE * _mulfile;
 private:

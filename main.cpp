@@ -45,7 +45,6 @@ int main(int argc, char * argv[]) {
     engine->get_processor<InputProcessor>()->activate();
     engine->add_processor<VisualProcessor>(2);
     engine->get_processor<VisualProcessor>()->activate();
-
     Form * loginform = form_login(engine);
     loginform->enable();
 

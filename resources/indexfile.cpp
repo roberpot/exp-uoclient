@@ -80,7 +80,7 @@ bool IndexFile::is_valid_index(uo_dword index) {
 }
 
 Entry3D IndexFile::get_entry(uo_dword index) {
-    if (!is_valid_index(index)) {
+    if (!IndexFile::is_valid_index(index)) {
         DEBUG_ERROR("Index not valid: " << index);
         throw 1;
     }
@@ -89,6 +89,7 @@ Entry3D IndexFile::get_entry(uo_dword index) {
     return e;
 }
 
-void IndexFile::read(uo_char ** buffer, Entry3D e) {
-    fread(buffer, sizeof(uo_char), e.length, _mulfile);
+void IndexFile::read(uo_byte * buffer, Entry3D e) {
+    fseek(_mulfile, e.lookup, 0);
+    fread(buffer, sizeof(uo_byte), e.length, _mulfile);
 }

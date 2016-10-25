@@ -9,13 +9,14 @@
 
 #include "basegump.h"
 #include "../../common/types.h"
+#include "../../resources/gump.h"
 
 class GumpPic : public CAshley::Entity, public BaseGump {
 public:
     void init(Form * f, uo_dword gumpid, int x, int y, int z);
     void shutdown();
 private:
-    uo_dword _gump_id;
+    GumpInfoRef _gumpref;
 };
 
 #endif //__UONEWCLIENT_GUMPPIC_H
