@@ -63,7 +63,7 @@ public:
     void halt();
     GumpInfoRef operator[](uo_dword index);
     unsigned int clean_cache();
-    unsigned int cache_size() { return _cache_size; }
+    unsigned int buffer_size() { return _buffer_size; }
     unsigned int mem_size() { return _cache_size + _buffer_size; }
     friend void GumpInfo::increase_counter();
     friend void GumpInfo::decrease_counter();

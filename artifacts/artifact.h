@@ -12,6 +12,7 @@ public:
     virtual void right_click();
     virtual void left_release();
     virtual void right_release();
+    virtual ~Artifact() {}
 private:
 };
 

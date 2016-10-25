@@ -14,6 +14,7 @@
 class Form {
 public:
     Form(CAshley::Engine * engine);
+    ~Form();
     void addgump(BaseGump * g);
     void enable();
     void disable();

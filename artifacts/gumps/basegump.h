@@ -13,6 +13,7 @@ class BaseGump : public Artifact {
 public:
     void init(Form * f);
     Form * form();
+    virtual ~BaseGump() {}
 protected:
     Form * _form;
 };

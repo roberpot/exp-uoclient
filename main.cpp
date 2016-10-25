@@ -56,10 +56,12 @@ int main(int argc, char * argv[]) {
         ticks_end = SDL_GetTicks();
         SDL_Delay(MAX(50 + ticks_init, ticks_end) - ticks_end);
     }
+    DEBUG_MSG("Gump buffer mem: " << gumpmanager->buffer_size() << " bytes. Total mem: " << gumpmanager->mem_size() << " bytes.");
     loginform->disable();
     delete loginform;
     delete engine;
-//    gumpmanager->halt();
+    DEBUG_MSG("Gump buffer mem: " << gumpmanager->buffer_size() << " bytes. Total mem: " << gumpmanager->mem_size() << " bytes.");
+    gumpmanager->halt();
     fontmanager->halt();
     video->halt_subsystem();
     input->halt_subsystem();
