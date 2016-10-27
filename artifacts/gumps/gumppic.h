@@ -15,6 +15,7 @@ class GumpPic : public CAshley::Entity, public BaseGump {
 public:
     void init(Form * f, uo_dword gumpid, int x, int y, int z);
     void shutdown();
+    CASHLEY_ENTITY
 private:
     GumpInfoRef _gumpref;
 };

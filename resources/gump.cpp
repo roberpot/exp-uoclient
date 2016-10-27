@@ -49,7 +49,7 @@ void GumpInfo::deflate() {
     // }
     unsigned int * current_target_pixel = _decompressed;
     unsigned int * last_target_pixel = current_target_pixel + size;
-    uo_byte * current_source_pixel = _raw;
+    uo_byte * current_source_pixel = _raw + sizeof(int) * _height;
     unsigned short run = 0;
     unsigned short source_color = 0;
     unsigned int target_color = 0;
@@ -104,15 +104,6 @@ unsigned int GumpInfo::memory() {
     return _width * _height * 8; // 4 bytes per color and 2 raw images.
 }
 
-//
-//void GumpInfo::unload() {
-//
-//}
-//
-//void GumpInfo::unload(HuesEntry e, bool from_gray) {
-//
-//}
-
 void GumpInfo::increase_counter() {
     _counter++;
     if (_counter == 1) {
@@ -133,20 +124,19 @@ GumpInfoRef::GumpInfoRef() {
 }
 
 GumpInfoRef::GumpInfoRef(GumpInfo * g) {
+    if (_g == g) {
+        return;
+    }
     _g = g;
     if (_g) {
         _g->increase_counter();
     }
 }
 
-//GumpInfoRef::GumpInfoRef(const GumpInfoRef g) {
-//    _g = g._g;
-//    if (_g) {
-//        _g->increase_counter();
-//    }
-//}
-
 GumpInfoRef::GumpInfoRef(const GumpInfoRef & g) {
+    if (this == &g) {
+        return;
+    }
     _g = g._g;
     if (_g) {
         _g->increase_counter();
@@ -154,6 +144,12 @@ GumpInfoRef::GumpInfoRef(const GumpInfoRef & g) {
 }
 
 GumpInfoRef & GumpInfoRef::operator=(GumpInfoRef g) {
+    if ((this == &g) || (_g == g._g)) {
+        return *this;
+    }
+    if (_g) {
+        _g->decrease_counter();
+    }
     _g = g._g;
     if (_g) {
         _g->increase_counter();
@@ -167,19 +163,16 @@ GumpInfoRef::~GumpInfoRef() {
     }
 }
 
-GumpInfoRef::operator GumpInfo&() {
+GumpInfo * GumpInfoRef::gump() {
     if (_g) {
-        return *_g;
+        return _g;
     }
     throw 1234;
 }
 
-
 GumpInfoRef::operator bool() const {
     return _g != NULL;
 }
-
-
 
 GumpManager * GumpManager::get() {
     static GumpManager _gm;
@@ -193,6 +186,7 @@ void GumpManager::init(const char * findex, const char * fdata) {
 }
 
 void GumpManager::halt() {
+    clean_cache();
     IndexFile::halt();
 }
 
@@ -217,7 +211,7 @@ bool GumpManager::is_valid_index(uo_dword index) {
 }
 
 
-GumpInfoRef GumpManager::operator[](uo_dword index) {
+GumpInfoRef GumpManager::get(uo_dword index) {
     if (!is_valid_index(index)) {
         DEBUG_ERROR("Invalid index: " << index);
         return NULL;
@@ -239,11 +233,10 @@ GumpInfoRef GumpManager::operator[](uo_dword index) {
     GumpInfo * gump = new GumpInfo(buffer, index, (unsigned int)width, (unsigned int)height);
     gump->deflate();
     gump_cache[index] = gump;
-    _buffer_size += gump->memory();
+    _cache_size += gump->memory();
     GumpInfoRef gumpref(gump);
     return gumpref;
 }
-
 
 unsigned int GumpManager::clean_cache() {
     unsigned int cs = _cache_size;
@@ -254,52 +247,6 @@ unsigned int GumpManager::clean_cache() {
     gump_cache.clear();
     return cs;
 }
-
-//GumpInfo GumpManager::_load_gump(uo_dword i, unsigned int forced_color) {
-//    GumpIdxEntry entry(_findex, i);
-//    uo_byte * gumpdata = new uo_byte[entry.length];
-//    fseek(_fdata, entry.lookup, 0);
-//    uo_byte raw[4];
-//    uo_uword counter = 0;
-//    uo_color readed_color= 0;
-//    unsigned int color = 0;
-//    unsigned int index = 0;
-//    unsigned int computed_size = 0;
-//    int length_readed = fread(gumpdata, sizeof(uo_byte), entry.length, _fdata);
-//    if (length_readed != entry.length) {
-//        throw 'a';
-//    }
-//    unsigned int * rawsurface = new unsigned int[entry.width * entry.height];
-//
-//    for(int k = 0; k < (entry.height * entry.width); k++) {
-//        while (counter == 0) {
-//            memcpy(raw, &(gumpdata[index]), 4);
-//            //print_raw(raw, 4);
-//            memcpy(&readed_color, raw, sizeof(uo_uword));
-//            memcpy(&counter, &raw[2], sizeof(uo_uword));
-//            color = color16_to_color32(readed_color);
-//            if (forced_color != 0 && color != 0) {
-//                color = forced_color;
-//            }
-//            if (color) {
-//                color |= 0xFF000000;
-//            }
-//            index += 4;
-//            computed_size += counter;
-//        }
-//        rawsurface[k] = color;
-//        counter--;
-//    }
-//    delete gumpdata;
-//    GumpInfo gump_info;
-//    gump_info.texture = generate_texture_from_raw(entry.width, entry.height, rawsurface);
-//    gump_info.width = entry.width;
-//    gump_info.height = entry.height;
-//    gump_info.memory = (unsigned int)(entry.width * entry.height * 4);
-//    delete rawsurface;
-//    return gump_info;
-//}
-
 
 bool GumpManager::is_gump_in_buffer(uo_dword index) {
     return gump_buffer.count(index) > 0;

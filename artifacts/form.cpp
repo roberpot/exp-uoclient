@@ -10,9 +10,9 @@ Form::Form(CAshley::Engine * engine) {
 }
 
 Form::~Form() {
+    disable();
     while(_gumps.size()) {
-        _engine->remove_entity(dynamic_cast<CAshley::Entity *>(_gumps[_gumps.size() - 1]));
-        BaseGump * g = _gumps[_gumps.size() - 1];
+        BaseGump * g = _gumps.back();
         _gumps.pop_back();
         delete g;
     }

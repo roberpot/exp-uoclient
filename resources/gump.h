@@ -49,7 +49,7 @@ public:
     GumpInfoRef(const GumpInfoRef & g);
     GumpInfoRef & operator=(GumpInfoRef g);
     ~GumpInfoRef();
-    operator GumpInfo&();
+    GumpInfo * gump();
     operator bool() const;
 private:
     GumpInfo * _g;
@@ -61,7 +61,7 @@ public:
     static GumpManager * get();
     void init(const char * findex, const char * fdata);
     void halt();
-    GumpInfoRef operator[](uo_dword index);
+    GumpInfoRef get(uo_dword index);
     unsigned int clean_cache();
     unsigned int buffer_size() { return _buffer_size; }
     unsigned int mem_size() { return _cache_size + _buffer_size; }
