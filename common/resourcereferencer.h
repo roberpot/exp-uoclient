@@ -7,16 +7,16 @@
 
 class ReferencedResource {
 public:
-    friend class ResourceRef;
     ReferencedResource();
-private:
     void dereference();
     void reference();
+private:
     unsigned int _refcounter;
 };
 
+
 template<class T>
-class ResourceRef<T> {
+class ResourceRef {
 public:
     ResourceRef() : _t(0) {};
     ResourceRef(T * t) {
@@ -50,6 +50,7 @@ public:
         }
         return *this;
     }
+    inline T * get() { return _t; }
     void dereference() {
         if (_t) {
             _t->dereference();

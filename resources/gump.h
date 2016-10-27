@@ -38,6 +38,7 @@ private:
     unsigned int _counter;
     uo_byte * _raw;
     unsigned int * _decompressed, * _onlygraypixels;
+    uo_uword * _readyforhues;
 };
 
 

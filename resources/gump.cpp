@@ -16,6 +16,7 @@ GumpInfo::GumpInfo(uo_byte * raw, uo_dword index, unsigned int width, unsigned i
     _height = height;
     _decompressed = NULL;
     _onlygraypixels = NULL;
+    _readyforhues = NULL;
     _counter = 0;
     _texture = 0;
 }
@@ -26,6 +27,9 @@ GumpInfo::~GumpInfo() {
         delete _decompressed;
     if (_onlygraypixels)
         delete _onlygraypixels;
+    if (_readyforhues) {
+        delete _readyforhues;
+    }
     if (_texture) {
         glDeleteTextures(1, &_texture);
     }
@@ -35,38 +39,37 @@ void GumpInfo::deflate() {
     unsigned int size = _width * _height;
     _decompressed = new unsigned int[size];
     _onlygraypixels = new unsigned int[size];
-    DEBUG_INFO("W: " << _width << " H: " << _height << " SIZE: " << size);
-//    uo_char * colortable = new uo_char[128];
-    // pshuecolors = hue.colors.
-//    uo_char * pbcolortable = colortable;
-    // phuecolors = pshuecolors;
-    // phuecolorsend = phuecolors + 32;
-//    unsigned short * pcolortable = (unsigned short *)pbcolortable;
-//    unsigned short * pcolortableopaque = pcolortable;
-//    UNREFERENCED_PARAMETER(pcolortableopaque);
-    // while (phuecolors < phuecolorsend) {
-    //     *pcolortableopaque++ = *phuecolors++;
-    // }
+    _readyforhues = new uo_uword[size];
     unsigned int * current_target_pixel = _decompressed;
+    unsigned int * current_onlygray_pixel = _onlygraypixels;
+    uo_uword * current_readyforhues_pixel = _readyforhues;
     unsigned int * last_target_pixel = current_target_pixel + size;
     uo_byte * current_source_pixel = _raw + sizeof(int) * _height;
     unsigned short run = 0;
     unsigned short source_color = 0;
     unsigned int target_color = 0;
+    unsigned int target_onlygray_color = 0;
+    uo_uword target_readyforhues_color = 0;
     while (current_target_pixel < last_target_pixel) {
         source_color = *(unsigned short *)current_source_pixel;
         current_source_pixel += 2;
         run = *(unsigned short *)current_source_pixel;
         current_source_pixel += 2;
-//        if (source_color != 0) {
-//            source_color = pcolortable[color >> 10];
-//        }
+        target_readyforhues_color = 0;
         target_color = color16_to_color32(source_color);
         if (target_color) {
             target_color |= 0xFF000000;
+            target_readyforhues_color = get_huetable_lookup(source_color);
         }
+        target_onlygray_color = target_color;
+        if (is_gray(source_color)) {
+            target_onlygray_color = color16_to_color32_gray(source_color);
+        }
+
         while (run) {
             *current_target_pixel++ = target_color;
+            *current_onlygray_pixel++ = target_onlygray_color;
+            *current_readyforhues_pixel++ = target_readyforhues_color;
             run--;
         }
     }
@@ -223,8 +226,6 @@ GumpInfoRef GumpManager::get(uo_dword index) {
     if (is_gump_in_cache(index)) {
         return GumpInfoRef(gump_cache[index]);
     }
-
-    DEBUG_ERROR("Need to load: " << index);
     Entry3D e = get_entry(index);
     int width = (e.extra >> 16) & 0xFFFF;
     int height = e.extra & 0xFFFF;
