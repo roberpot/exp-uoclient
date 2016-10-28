@@ -14,6 +14,7 @@
 class HuesEntry {
 public:
     uo_word colortable[32];
+    unsigned int uicolortable[32];
     uo_word tablestart;
     uo_word tableend;
     uo_char name[20];

@@ -18,7 +18,6 @@ GumpInfo::GumpInfo(uo_byte * raw, uo_dword index, unsigned int width, unsigned i
     _onlygraypixels = NULL;
     _readyforhues = NULL;
     _counter = 0;
-    _texture = 0;
 }
 
 GumpInfo::~GumpInfo() {
@@ -29,9 +28,6 @@ GumpInfo::~GumpInfo() {
         delete _onlygraypixels;
     if (_readyforhues) {
         delete _readyforhues;
-    }
-    if (_texture) {
-        glDeleteTextures(1, &_texture);
     }
 }
 
@@ -75,12 +71,12 @@ void GumpInfo::deflate() {
     }
 }
 
-unsigned int GumpInfo::texturize() {
-    if (_texture) {
-        return _texture;
+ResourceRef<Texture> GumpInfo::texturize() {
+    if (_t.get()) {
+        return _t;
     }
-    _texture = generate_texture_from_raw(_width, _height, _decompressed);
-    return _texture;
+    _t = ResourceRef<Texture>(new Texture(_width, _height, _decompressed));
+    return _t;
 }
 
 unsigned int GumpInfo::texturize(HuesEntry e, bool from_gray) {
@@ -89,7 +85,7 @@ unsigned int GumpInfo::texturize(HuesEntry e, bool from_gray) {
     return 0;
 }
 
-unsigned int GumpInfo::texturize(unsigned int color) {
+ResourceRef<Texture> GumpInfo::texturize(unsigned int color) {
     unsigned int size = _width * _height;
     unsigned int * raw_colorized = new unsigned int [size];
     memcpy(raw_colorized, _decompressed, sizeof(unsigned int) * size);
@@ -98,9 +94,9 @@ unsigned int GumpInfo::texturize(unsigned int color) {
             raw_colorized[i] = color;
         }
     }
-    unsigned int texture = generate_texture_from_raw(_width, _height, raw_colorized);
+    ResourceRef<Texture> t(new Texture(_width, _height, raw_colorized));
     delete raw_colorized;
-    return texture;
+    return t;
 }
 
 unsigned int GumpInfo::memory() {

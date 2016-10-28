@@ -13,6 +13,7 @@
 #include "hues.h"
 #include "../common/debug.h"
 #include "../common/types.h"
+#include "../common/garbagecollector/texture.h"
 
 
 class GumpInfo {
@@ -20,9 +21,9 @@ public:
     GumpInfo(uo_byte * raw, uo_dword index, unsigned int width, unsigned int height);
     ~GumpInfo();
     void deflate();
-    unsigned int texturize();
+    ResourceRef<Texture> texturize();
     unsigned int texturize(HuesEntry e, bool from_gray=false);
-    unsigned int texturize(unsigned int color);
+    ResourceRef<Texture> texturize(unsigned int color);
     unsigned int memory();
     inline unsigned int width() { return _width; }
     inline unsigned int height() { return _height; }
@@ -34,7 +35,8 @@ private:
     void increase_counter();
     void decrease_counter();
     uo_dword _index;
-    unsigned int _texture, _width, _height;
+    ResourceRef<Texture> _t;
+    unsigned int _width, _height;
     unsigned int _counter;
     uo_byte * _raw;
     unsigned int * _decompressed, * _onlygraypixels;

@@ -23,7 +23,7 @@ void VisualComponent::setup_with_dl(int x, int y, int z, unsigned int dl, unsign
     move(x, y, z);
 }
 
-void VisualComponent::setup(int x, int y, int w, int h, int z, unsigned int texture, unsigned int flags) {
+void VisualComponent::setup(int x, int y, int w, int h, int z, ResourceRef<Texture> texture, unsigned int flags) {
     data->w = w;
     data->h = h;
     data->texture = texture;
@@ -43,7 +43,7 @@ void VisualComponent::move(int x, int y, int z) {
         glCallList(data->internal_dl);
         glPopMatrix();
     } else {
-        display_textured_square(x, y, data->w, data->h, z, data->texture);
+        display_textured_square(x, y, data->w, data->h, z, data->texture.get()->get());
     }
     glEndList();
 }

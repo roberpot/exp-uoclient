@@ -9,9 +9,9 @@
 #include "../common/colorutils.h"
 #include "../common/debug.h"
 #include "../common/errors.h"
-#include "../common/textureutils.h"
 #include "../common/types.h"
 #include "../common/utils.h"
+#include "../common/garbagecollector/texture.h"
 #include "font.h"
 
 class Glyph {
@@ -24,22 +24,21 @@ public:
     unsigned int h() { return (unsigned int)_h; }
 private:
     uo_byte _w, _h, _header;
-    unsigned int texture;
+    ResourceRef<Texture> _t;
 };
 
 Glyph::Glyph(uo_byte w, uo_byte h, uo_byte header, unsigned int * pixels) {
     _w = w;
     _h = h;
     _header = header;
-    texture = generate_texture_from_raw(_w, _h, pixels);
+    _t = ResourceRef<Texture>(new Texture(_w, _h, pixels));
 }
 
 Glyph::~Glyph() {
-    remove_texture(texture);
 }
 
 void Glyph::render(int x, int y) {
-    display_textured_square(x, y, _w, _h, 0, texture);
+    display_textured_square(x, y, _w, _h, 0, _t.get()->get());
 }
 
 Font::Reference::Reference(Font * f, unsigned int i) {

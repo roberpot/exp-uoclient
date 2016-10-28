@@ -3,6 +3,7 @@
 //
 
 #include "hues.h"
+#include "../common/colorutils.h"
 
 HuesEntry::HuesEntry() {
     for (unsigned int i = 0; i < 32; i++) {
@@ -18,6 +19,9 @@ void HuesEntry::read(FILE * f) {
     fread((void *)&tablestart, sizeof(uo_word), 1, f);
     fread((void *)&tableend, sizeof(uo_word), 1, f);
     fread((void *)name, sizeof(uo_char), 20, f);
+    for (unsigned int i = 0; i < 32; i++) {
+        uicolortable[i] = color16_to_color32(colortable[i]);
+    }
 }
 
 HuesGroup::HuesGroup() {

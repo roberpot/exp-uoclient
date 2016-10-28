@@ -6,6 +6,7 @@
 #define __UONEWCLIENT_PHYSICALCOMPONENT_H
 
 #include <cashley/cashley.h>
+#include "../common/garbagecollector/texture.h"
 
 #define PC_F_NONE         0x0000
 #define PC_F_INTERNAL_DL  0x0001
@@ -15,8 +16,8 @@
 class PhysicalComponentData {
 public:
     int x, y, w, h, z;
-    unsigned int texture, flags;
-    unsigned int internal_dl;
+    unsigned int flags, internal_dl;
+    ResourceRef<Texture> texture;
 };
 
 class InputEngine;
@@ -26,7 +27,7 @@ public:
     void init();
     void shutdown();
 //    void setup();
-    void setup(int x, int y, int w, int h, int z, unsigned int texture, unsigned int flags = PC_F_NONE);
+    void setup(int x, int y, int w, int h, int z, ResourceRef<Texture> texture, unsigned int flags = PC_F_NONE);
     void setup_with_dl(int x, int y, int z, unsigned int dl, unsigned int flags = PC_F_INTERNAL_DL);
     void move(int x, int y, int z);
     void display();

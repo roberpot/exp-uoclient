@@ -9,6 +9,7 @@
 
 #include "basegump.h"
 #include "../../common/types.h"
+#include "../../common/garbagecollector/texture.h"
 #include "../../resources/gump.h"
 
 
@@ -20,7 +21,7 @@ public:
 private:
     void _prerender(int w, int h, unsigned int color=0);
     GumpInfoRef _ginforefs[9];
-    unsigned int _flattextures[9];
+    ResourceRef<Texture> _flattextures[9];
     unsigned int _dl, _dl2;
 };
 

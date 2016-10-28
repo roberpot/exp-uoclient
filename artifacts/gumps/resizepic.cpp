@@ -32,7 +32,8 @@ void ResizePic::init(Form * f, uo_dword gumpid, int x, int y, int z, int w, int 
 }
 
 void ResizePic::_prerender(int w, int h, unsigned int color) {
-    unsigned int interx1, interx2, intery1, intery2, tmptex[9];
+    unsigned int interx1, interx2, intery1, intery2;
+    ResourceRef<Texture> tmptex[9];
     for (unsigned int i = 0; i < 9; i++) {
         if (color) {
             tmptex[i] = _ginforefs[i].gump()->texturize(color);
@@ -45,23 +46,23 @@ void ResizePic::_prerender(int w, int h, unsigned int color) {
     interx2 = w - _ginforefs[2].gump()->width();
     intery2 = h - _ginforefs[6].gump()->height();
     // Top-left.
-    display_textured_square(0, 0, _ginforefs[0].gump()->width(), _ginforefs[0].gump()->height(), 0, tmptex[0]);
+    display_textured_square(0, 0, _ginforefs[0].gump()->width(), _ginforefs[0].gump()->height(), 0, tmptex[0].get()->get());
     // Top-right.
-    display_textured_square(interx2, 0, _ginforefs[2].gump()->width(), _ginforefs[2].gump()->height(), 0, tmptex[2]);
+    display_textured_square(interx2, 0, _ginforefs[2].gump()->width(), _ginforefs[2].gump()->height(), 0, tmptex[2].get()->get());
     // Top.
-    display_textured_square(interx1, 0, interx2 - interx1, _ginforefs[1].gump()->height(), 0, tmptex[1]);
+    display_textured_square(interx1, 0, interx2 - interx1, _ginforefs[1].gump()->height(), 0, tmptex[1].get()->get());
     // Bottom-left.
-    display_textured_square(0, intery2, _ginforefs[6].gump()->width(), _ginforefs[6].gump()->height(), 0, tmptex[6]);
+    display_textured_square(0, intery2, _ginforefs[6].gump()->width(), _ginforefs[6].gump()->height(), 0, tmptex[6].get()->get());
     // Bottom-right.
-    display_textured_square(interx2, intery2, _ginforefs[8].gump()->width(), _ginforefs[8].gump()->height(), 0, tmptex[8]);
+    display_textured_square(interx2, intery2, _ginforefs[8].gump()->width(), _ginforefs[8].gump()->height(), 0, tmptex[8].get()->get());
     // Bottom.
-    display_textured_square(interx1, intery2, interx2 - interx1, _ginforefs[7].gump()->height(), 0, tmptex[7]);
+    display_textured_square(interx1, intery2, interx2 - interx1, _ginforefs[7].gump()->height(), 0, tmptex[7].get()->get());
     // Left.
-    display_textured_square(0, intery1, _ginforefs[3].gump()->width(), intery2 - intery1, 0, tmptex[3]);
+    display_textured_square(0, intery1, _ginforefs[3].gump()->width(), intery2 - intery1, 0, tmptex[3].get()->get());
     // Right.
-    display_textured_square(interx2, intery1, _ginforefs[5].gump()->width(), intery2 - intery1, 0, tmptex[5]);
+    display_textured_square(interx2, intery1, _ginforefs[5].gump()->width(), intery2 - intery1, 0, tmptex[5].get()->get());
     // Center
-    display_textured_square(interx1, intery1, interx2 - interx1, intery2 - intery1, 0, tmptex[4]);
+    display_textured_square(interx1, intery1, interx2 - interx1, intery2 - intery1, 0, tmptex[4].get()->get());
 }
 
 void ResizePic::shutdown() {

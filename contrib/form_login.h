@@ -11,4 +11,4 @@
 
 Form * form_login(CAshley::Engine * e);
 
-#endif //UONEWCLIENT_FORM_LOGIN_H
+#endif //__UONEWCLIENT_FORM_LOGIN_H

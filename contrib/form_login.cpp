@@ -3,7 +3,6 @@
 //
 
 #include "form_login.h"
-#include "../artifacts/gumps/gumps.h"
 #include "../common/types.h"
 
 
@@ -17,9 +16,6 @@ Form * form_login(CAshley::Engine * e) {
     text->init(f, 2, "Log in to Ultima Online", 255, 311, 6);
 //    resizepic = new ResizePic;
 //    resizepic->init(f, 9350, 130, 289, 9, 60, 40);
-
-
-
 //    = new ResizePic;
 //    resizepic->init(f, 5054, 130, 289, 9, 451, 157);
 //    gumpic = new GumpPic;

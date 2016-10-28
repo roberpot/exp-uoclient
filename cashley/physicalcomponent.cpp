@@ -36,7 +36,7 @@ void PhysicalComponent::shutdown() {
 //    glEndList();
 //}
 
-void PhysicalComponent::setup(int x, int y, int w, int h, int z, unsigned int texture, unsigned int flags) {
+void PhysicalComponent::setup(int x, int y, int w, int h, int z, ResourceRef<Texture> texture, unsigned int flags) {
     data->w = w;
     data->h = h;
     data->texture = texture;
@@ -66,7 +66,7 @@ void PhysicalComponent::move(int x, int y, int z) {
         glCallList(data->internal_dl);
         glPopMatrix();
     } else {
-        display_textured_square(x, y, data->w, data->h, data->z, data->texture);
+        display_textured_square(x, y, data->w, data->h, data->z, data->texture.get()->get());
     }
     glEndList();
 }
