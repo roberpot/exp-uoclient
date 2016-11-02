@@ -44,7 +44,7 @@ void print_raw(uo_byte * raw, unsigned int l) {
 }
 
 std::string int2hex_string(unsigned int i) {
-    UNREFERENCED_PARAMETER(i);
+    UNUSED_PARAMETER(i);
     std::string a;
     return a;
 }

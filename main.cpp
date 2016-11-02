@@ -3,7 +3,6 @@
 #include <SDL2/SDL.h>
 #include <cashley/cashley.h>
 
-#include "common/debug.h"
 #include "engines/video.h"
 #include "engines/input.h"
 #include "resources/gump.h"
@@ -13,11 +12,12 @@
 #include "cashley/physicsprocessor.h"
 #include "cashley/visualprocessor.h"
 #include "contrib/form_login.h"
+#include "common/debug.h"
 
 
 int main(int argc, char * argv[]) {
-    UNREFERENCED_PARAMETER(argc);
-    UNREFERENCED_PARAMETER(argv);
+    UNUSED_PARAMETER(argc);
+    UNUSED_PARAMETER(argv);
     debug_init();
 
     // Initialize systems.

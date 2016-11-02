@@ -9,6 +9,8 @@
 #include "../resources/gump.h"
 #include "../resources/hues.h"
 
+#include "debug.h"
+
 #include "core.h"
 
 InputEngine input;

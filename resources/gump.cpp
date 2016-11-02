@@ -79,8 +79,8 @@ ResourceRef<Texture> GumpInfo::texturize() {
 }
 
 unsigned int GumpInfo::texturize(HuesEntry e, bool from_gray) {
-    UNREFERENCED_PARAMETER(e);
-    UNREFERENCED_PARAMETER(from_gray);
+    UNUSED_PARAMETER(e);
+    UNUSED_PARAMETER(from_gray);
     return 0;
 }
 

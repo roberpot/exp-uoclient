@@ -7,9 +7,9 @@
 
 #include <vector>
 
-#include "../common/debug.h"
 #include "../common/garbagecollector/displaylist.h"
 
+#include "../common/debug.h"
 
 class Glyph;
 
@@ -48,8 +48,8 @@ public:
     void halt();
     ResourceRef<DisplayList> rasterize(unsigned int f, const char * buffer);
 private:
-    FontManager(const FontManager &f) { UNREFERENCED_PARAMETER(f); }
-    void operator=(const FontManager &f) { UNREFERENCED_PARAMETER(f); }
+    FontManager(const FontManager &f) { UNUSED_PARAMETER(f); }
+    void operator=(const FontManager &f) { UNUSED_PARAMETER(f); }
     std::vector<Font *> fonts;
 } fontmanager;
 

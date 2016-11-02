@@ -43,8 +43,8 @@ public:
     inline bool continue_execution() { return _continue_execution; }
     inline unsigned int collide_color() { return _collide_color; }
 private:
-    InputEngine(const InputEngine &v) { UNREFERENCED_PARAMETER(v); }
-    void operator = (const InputEngine &v) { UNREFERENCED_PARAMETER(v); }
+    InputEngine(const InputEngine &v) { UNUSED_PARAMETER(v); }
+    void operator = (const InputEngine &v) { UNUSED_PARAMETER(v); }
     int _x, _y;
     int _x_run, _y_run;
     unsigned short _mouse_status;

@@ -54,8 +54,8 @@ public:
     friend void GumpInfo::counter_starts();
     friend void GumpInfo::counter_ends();
 private:
-    GumpManager(const GumpManager &g) { UNREFERENCED_PARAMETER(g); }
-    void operator = (const GumpManager & g) { UNREFERENCED_PARAMETER(g); }
+    GumpManager(const GumpManager &g) { UNUSED_PARAMETER(g); }
+    void operator = (const GumpManager & g) { UNUSED_PARAMETER(g); }
 
     virtual bool is_valid_index(uo_dword index);
 

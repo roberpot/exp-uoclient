@@ -19,8 +19,8 @@ public:
     void clear();
     unsigned int get_collor_at_position(int x, int y);
 private:
-    VideoEngine(const VideoEngine &v) { UNREFERENCED_PARAMETER(v); }
-    void operator = (const VideoEngine &v) { UNREFERENCED_PARAMETER(v); }
+    VideoEngine(const VideoEngine &v) { UNUSED_PARAMETER(v); }
+    void operator = (const VideoEngine &v) { UNUSED_PARAMETER(v); }
     void compile_shaders();
     unsigned int w, h;
 

@@ -36,8 +36,8 @@ public:
     void init(const char * findex);
     void halt();
 private:
-    HuesManager(const HuesManager &g) { UNREFERENCED_PARAMETER(g); }
-    void operator = (const HuesManager & g) { UNREFERENCED_PARAMETER(g); }
+    HuesManager(const HuesManager &g) { UNUSED_PARAMETER(g); }
+    void operator = (const HuesManager & g) { UNUSED_PARAMETER(g); }
     FILE * _findex;
     std::map<uo_dword, HuesGroup> huesgroups;
     std::map<uo_dword, HuesEntry> huesentries;

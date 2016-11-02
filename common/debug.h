@@ -28,10 +28,10 @@ void _debug_print(const char * buffer);
 #define debug_halt()
 #endif
 
-#ifdef UNREFERENCED_PARAMETER
-#undef UNREFERENCED_PARAMETER
-#endif //UNREFERENCED_PARAMETER
-#define UNREFERENCED_PARAMETER(x) (void)(x)
+#ifdef UNUSED_PARAMETER
+#undef UNUSED_PARAMETER
+#endif //UNUSED_PARAMETER
+#define UNUSED_PARAMETER(x) (void)(x)
 
 #ifdef UNREFERENCED_FUNCTION
 #undef UNREFERENCED_FUNCTION
@@ -39,7 +39,7 @@ void _debug_print(const char * buffer);
 #define UNREFERENCED_FUNCTION(x) \
 void __##x##_unused_function() { \
     void (*f)(void*) = (void (*)(void *))&x; \
-    UNREFERENCED_PARAMETER(f); \
+    UNUSED_PARAMETER(f); \
 } \
 void __##x##_unused_function() __attribute__ ((unused))
 

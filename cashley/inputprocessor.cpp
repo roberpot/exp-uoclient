@@ -8,7 +8,7 @@
 #include "physicalcomponent.h"
 
 void InputProcessor::run_tick(unsigned int delay) {
-    UNREFERENCED_PARAMETER(delay);
+    UNUSED_PARAMETER(delay);
     CAshley::Family f;
     CAshley::EntityArray v;
     f.filter<PhysicalComponent>();
