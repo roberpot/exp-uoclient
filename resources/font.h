@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "../common/debug.h"
+#include "../common/garbagecollector/displaylist.h"
 
 
 class Glyph;
@@ -31,7 +32,7 @@ public:
     Glyph * operator[](unsigned int i) const;
     Reference operator[](unsigned int i);
 
-    unsigned int rasterize(const char * buffer);
+    ResourceRef<DisplayList> rasterize(const char * buffer);
 
 private:
     void update_max_height(Glyph * g);
@@ -40,18 +41,16 @@ private:
     unsigned int _max_height, _character_count;
 };
 
-class FontManager {
+extern class FontManager {
 public:
-    static FontManager * get();
+    FontManager() {}
     void init(const char * file);
     void halt();
-    unsigned int rasterize(unsigned int f, const char * buffer);
+    ResourceRef<DisplayList> rasterize(unsigned int f, const char * buffer);
 private:
-    FontManager() {}
     FontManager(const FontManager &f) { UNREFERENCED_PARAMETER(f); }
     void operator=(const FontManager &f) { UNREFERENCED_PARAMETER(f); }
-    static FontManager _fm;
     std::vector<Font *> fonts;
-};
+} fontmanager;
 
 #endif //__UONEWCLIENT_FONT_H

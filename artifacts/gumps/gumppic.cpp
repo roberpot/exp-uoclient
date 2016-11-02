@@ -7,26 +7,34 @@
 #include "gumppic.h"
 #include "../../cashley/visualcomponent.h"
 #include "../../cashley/physicalcomponent.h"
+#include "../form.h"
 
-void GumpPic::init(Form * f, uo_dword gumpid, int x, int y, int z) {
+void GumpPic::init(Form * f, uo_dword gumpid, unsigned int x, unsigned int y) {
     BaseGump::init(f);
-
-    GumpManager * gumpmanager = GumpManager::get();
-    _gumpref = gumpmanager->get(gumpid);
+    _x = x;
+    _y = y;
+    _gumpref = gumpmanager[gumpid];
         // Graphical component.
     add_component<VisualComponent>();
-    get_component<VisualComponent>()->setup(x, y, _gumpref.gump()->width(), _gumpref.gump()->height(), z, _gumpref.gump()->texturize(), 0);
+    get_component<VisualComponent>()->setup(x, y, _gumpref()->width(), _gumpref()->height(), 0, _gumpref()->texturize(), 0);
     // Physical component.
     add_component<PhysicalComponent>();
-    get_component<PhysicalComponent>()->setup(x, y, _gumpref.gump()->width(), _gumpref.gump()->height(), z, _gumpref.gump()->texturize(get_component<PhysicalComponent>()->get_color()));
+    get_component<PhysicalComponent>()->setup(x, y, _gumpref()->width(), _gumpref()->height(), 0, _gumpref()->texturize(get_component<PhysicalComponent>()->get_color()));
+}
+
+void GumpPic::move(int x, int y, int z) {
+    get_component<VisualComponent>()->move(x + _x, y + _y, z);
+    get_component<PhysicalComponent>()->move(x + _x, y + _y, z);
+}
+
+void GumpPic::drag(int x, int y) {
+    _form->move(x, y);
+}
+
+void GumpPic::right_click() {
+    _form->close();
 }
 
 void GumpPic::shutdown() {
-    _gumpref = GumpInfoRef();
-//    GumpManager * gumpmanager = GumpManager::get();
-//    MemoryManager * memory = MemoryManager::get();
-//    memory->graphic_component_deactivate(gc);
-//    DEBUG_MSG("INTER MEM.");
-//    memory->graphic_component_free(gc);
-//    gumpmanager->unload_gump(_gump_id);
+    _gumpref = ResourceRef<GumpInfo>();
 }

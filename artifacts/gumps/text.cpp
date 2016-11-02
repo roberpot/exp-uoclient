@@ -12,24 +12,30 @@
 #include "../../cashley/physicalcomponent.h"
 
 
-void Text::init(Form * f, unsigned int font, const char * t, int x, int y, int z) {
+void Text::init(Form * f, unsigned int font, const char * t, unsigned int x, unsigned int y) {
     BaseGump::init(f);
-
+    _x = x;
+    _y = y;
     // Graphical component.
     add_component<VisualComponent>();
     VisualComponent * vcomp = get_component<VisualComponent>();
-    _text = FontManager::get()->rasterize(font, t);
-    vcomp->setup_with_dl(x, y, z, _text);
+    _text = fontmanager.rasterize(font, t);
+    vcomp->setup_with_dl(x, y, 0, _text);
     // Physical component.
     // Physical component.
 //    add_component<PhysicalComponent>();
 //    this->get_component<PhysicalComponent>()->init();
 }
 
-void Text::init(Form * f, unsigned int font, std::string t, int x, int y, int z) {
-    init(f, font, t.c_str(), x, y, z);
+void Text::init(Form * f, unsigned int font, std::string t, unsigned int x, unsigned int y) {
+    init(f, font, t.c_str(), x, y);
+}
+
+void Text::move(int x, int y, int z) {
+    get_component<VisualComponent>()->move(x + _x, y + _y, z);
+//    get_component<PhysicalComponent>()->move(x + _x, y + _y, z);
 }
 
 void Text::shutdown() {
-    glDeleteLists(_text, 1);
+    _text = ResourceRef<DisplayList>();
 }

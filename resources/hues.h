@@ -30,19 +30,17 @@ public:
     void read(FILE * f);
 };
 
-class HuesManager {
+extern class HuesManager {
 public:
-    static HuesManager * get();
+    HuesManager() {}
     void init(const char * findex);
     void halt();
 private:
-    HuesManager() {}
     HuesManager(const HuesManager &g) { UNREFERENCED_PARAMETER(g); }
     void operator = (const HuesManager & g) { UNREFERENCED_PARAMETER(g); }
-    static HuesManager _hm;
     FILE * _findex;
     std::map<uo_dword, HuesGroup> huesgroups;
     std::map<uo_dword, HuesEntry> huesentries;
-};
+} huesmanager;
 
 #endif //__UONEWCLIENT_HUES_H

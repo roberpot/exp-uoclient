@@ -12,6 +12,7 @@
 #include "../common/types.h"
 #include "../common/utils.h"
 #include "../common/garbagecollector/texture.h"
+#include "../common/garbagecollector/displaylist.h"
 #include "font.h"
 
 class Glyph {
@@ -88,23 +89,19 @@ void Font::update_max_height(Glyph * g) {
     }
 }
 
-unsigned int Font::rasterize(const char * buffer) {
-    unsigned int displaylist_id = glGenLists(1);
+ResourceRef<DisplayList> Font::rasterize(const char * buffer) {
     unsigned int index = 0;
-    glNewList(displaylist_id, GL_COMPILE);
+    ResourceRef<DisplayList> res(new DisplayList);
+    res()->init_compilation();
     for(unsigned int i = 0; i < strlen(buffer); i++) {
         Glyph * g = glyphs[buffer[i] - 32];
         g->render(index, _max_height - g->h());
         index += g->w();
     }
-    glEndList();
-    return displaylist_id;
+    res()->end_compilation();
+    return res;
 }
 
-FontManager * FontManager::get() {
-    static FontManager _fm;
-    return &_fm;
-}
 
 void FontManager::init(const char * file) {
     FILE * f = fopen(file, "rb");
@@ -164,6 +161,6 @@ void FontManager::halt() {
     fonts.clear();
 }
 
-unsigned int FontManager::rasterize(unsigned int f, const char * buffer) {
+ResourceRef<DisplayList> FontManager::rasterize(unsigned int f, const char * buffer) {
     return fonts[f]->rasterize(buffer);
 }

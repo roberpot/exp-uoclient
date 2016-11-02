@@ -17,7 +17,6 @@ GumpInfo::GumpInfo(uo_byte * raw, uo_dword index, unsigned int width, unsigned i
     _decompressed = NULL;
     _onlygraypixels = NULL;
     _readyforhues = NULL;
-    _counter = 0;
 }
 
 GumpInfo::~GumpInfo() {
@@ -103,79 +102,12 @@ unsigned int GumpInfo::memory() {
     return _width * _height * 8; // 4 bytes per color and 2 raw images.
 }
 
-void GumpInfo::increase_counter() {
-    _counter++;
-    if (_counter == 1) {
-        GumpManager::get()->move_gump_from_cache_to_buffer(_index);
-    }
+void GumpInfo::counter_starts() {
+    gumpmanager.move_gump_from_cache_to_buffer(_index);
 }
 
-void GumpInfo::decrease_counter() {
-    _counter--;
-    if (_counter == 0) {
-        GumpManager::get()->move_gump_from_buffer_to_cache(_index);
-    }
-}
-
-
-GumpInfoRef::GumpInfoRef() {
-    _g = NULL;
-}
-
-GumpInfoRef::GumpInfoRef(GumpInfo * g) {
-    if (_g == g) {
-        return;
-    }
-    _g = g;
-    if (_g) {
-        _g->increase_counter();
-    }
-}
-
-GumpInfoRef::GumpInfoRef(const GumpInfoRef & g) {
-    if (this == &g) {
-        return;
-    }
-    _g = g._g;
-    if (_g) {
-        _g->increase_counter();
-    }
-}
-
-GumpInfoRef & GumpInfoRef::operator=(GumpInfoRef g) {
-    if ((this == &g) || (_g == g._g)) {
-        return *this;
-    }
-    if (_g) {
-        _g->decrease_counter();
-    }
-    _g = g._g;
-    if (_g) {
-        _g->increase_counter();
-    }
-    return *this;
-}
-
-GumpInfoRef::~GumpInfoRef() {
-    if (_g) {
-        _g->decrease_counter();
-    }
-}
-
-GumpInfo * GumpInfoRef::gump() {
-    if (_g) {
-        return _g;
-    }
-    throw 1234;
-}
-
-GumpInfoRef::operator bool() const {
-    return _g != NULL;
-}
-
-GumpManager * GumpManager::get() {
-    static GumpManager _gm;
-    return &_gm;
+void GumpInfo::counter_ends() {
+    gumpmanager.move_gump_from_buffer_to_cache(_index);
 }
 
 void GumpManager::init(const char * findex, const char * fdata) {
@@ -210,17 +142,17 @@ bool GumpManager::is_valid_index(uo_dword index) {
 }
 
 
-GumpInfoRef GumpManager::get(uo_dword index) {
+ResourceRef<GumpInfo> GumpManager::operator[](uo_dword index) {
     if (!is_valid_index(index)) {
         DEBUG_ERROR("Invalid index: " << index);
         return NULL;
     }
 
     if (is_gump_in_buffer(index)) {
-        return GumpInfoRef(gump_buffer[index]);
+        return ResourceRef<GumpInfo>(gump_buffer[index]);
     }
     if (is_gump_in_cache(index)) {
-        return GumpInfoRef(gump_cache[index]);
+        return ResourceRef<GumpInfo>(gump_cache[index]);
     }
     Entry3D e = get_entry(index);
     int width = (e.extra >> 16) & 0xFFFF;
@@ -231,8 +163,7 @@ GumpInfoRef GumpManager::get(uo_dword index) {
     gump->deflate();
     gump_cache[index] = gump;
     _cache_size += gump->memory();
-    GumpInfoRef gumpref(gump);
-    return gumpref;
+    return ResourceRef<GumpInfo>(gump);
 }
 
 unsigned int GumpManager::clean_cache() {

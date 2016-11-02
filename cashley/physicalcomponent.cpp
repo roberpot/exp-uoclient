@@ -9,6 +9,7 @@
 #include "visualcomponent.h"
 #include "../common/utils.h"
 #include "../engines/input.h"
+#include "../artifacts/artifact.h"
 
 
 unsigned int PhysicalComponent::_color_serial = 0xFF000000;
@@ -19,22 +20,15 @@ unsigned int PhysicalComponent::_color_serial = 0xFF000000;
 
 void PhysicalComponent::init() {
     _color = ++_color_serial;
-    _displaylist = glGenLists(1);
+    _dl = ResourceRef<DisplayList>(new DisplayList);
     data = new PhysicalComponentData;
     reset_status();
 }
 
 void PhysicalComponent::shutdown() {
-    glDeleteLists(_displaylist, 1);
+    _dl = ResourceRef<DisplayList>();
     delete data;
 }
-
-//void PhysicalComponent::setup() {
-//    glNewList(_displaylist, GL_COMPILE);
-//    glColor4bv((GLbyte*)&_color);
-//    this->get_owner()->get_component<VisualComponent>()->display();
-//    glEndList();
-//}
 
 void PhysicalComponent::setup(int x, int y, int w, int h, int z, ResourceRef<Texture> texture, unsigned int flags) {
     data->w = w;
@@ -45,12 +39,12 @@ void PhysicalComponent::setup(int x, int y, int w, int h, int z, ResourceRef<Tex
 }
 
 
-void PhysicalComponent::setup_with_dl(int x, int y, int z, unsigned int dl, unsigned int flags) {
+void PhysicalComponent::setup_with_dl(int x, int y, int z, ResourceRef<DisplayList> dl, unsigned int flags) {
     data->w = 0;
     data->h = 0;
     data->texture = 0;
     data->flags = flags | GC_F_INTERNAL_DL;
-    data->internal_dl = dl;
+    data->_dl = dl;
     move(x, y, z);
 }
 
@@ -58,28 +52,27 @@ void PhysicalComponent::move(int x, int y, int z) {
     data->x = x;
     data->y = y;
     data->z = z;
-    glDeleteLists(_displaylist, 1);
-    glNewList(_displaylist, GL_COMPILE);
+    _dl()->init_compilation();
     if (data->flags & GC_F_INTERNAL_DL) {
         glPushMatrix();
         glTranslated(x, y, data->z);
-        glCallList(data->internal_dl);
+        data->_dl()->display();
         glPopMatrix();
     } else {
         display_textured_square(x, y, data->w, data->h, data->z, data->texture.get()->get());
     }
-    glEndList();
+    _dl()->end_compilation();
 }
 
 void PhysicalComponent::display() {
-    glCallList(_displaylist);
+    _dl()->display();
 }
 
 void PhysicalComponent::reset_status() {
     _status = BLUR;
 }
 
-void PhysicalComponent::run(InputEngine * input) {
+void PhysicalComponent::run() {
     // Create event queue.
     enum _EventMessage {
         _BLUR = 0,
@@ -92,27 +85,27 @@ void PhysicalComponent::run(InputEngine * input) {
         _RRELEASE,
     };
     std::queue<_EventMessage> events;
-    if (input->collide_color() == _color) {
+    if (input.collide_color() == _color) {
         events.push(_OVER);
     } else {
         events.push(_BLUR);
     }
-    if (input->lclick()) {
+    if (input.lclick()) {
         events.push(_LCLICK);
     }
-    if (input->mclick()) {
+    if (input.mclick()) {
         events.push(_MCLICK);
     }
-    if (input->rclick()) {
+    if (input.rclick()) {
         events.push(_RCLICK);
     }
-    if (input->lrelease()) {
+    if (input.lrelease()) {
         events.push(_LRELEASE);
     }
-    if (input->mrelease()) {
+    if (input.mrelease()) {
         events.push(_MRELEASE);
     }
-    if (input->rrelease()) {
+    if (input.rrelease()) {
         events.push(_RRELEASE);
     }
     _EventMessage m;
@@ -138,19 +131,21 @@ void PhysicalComponent::run(InputEngine * input) {
                     } break;
                     case _LCLICK: {
                         _status = LPUSHED_OVER;
-                        _last_action_ticks = input->get_ticks();
+                        _last_action_ticks = input.get_ticks();
                     } break;
                     case _RCLICK: {
                         _status = RPUSHED;
                         // call artifact rclick.
+                        dynamic_cast<Artifact*>(get_owner())->right_click();
                         DEBUG_INFO("RCLICK: " << this);
                     } break;
                     default: break;
                 }
             } break;
             case LPUSHED_OVER: {
-                if (!(data->flags & PC_F_DRAG_DELAYED) || (input->get_ticks() - _last_action_ticks > MAX_WAIT_FOR_DRAG)) {
+                if (!(data->flags & PC_F_DRAG_DELAYED) || (input.get_ticks() - _last_action_ticks > MAX_WAIT_FOR_DRAG)) {
                     // call artifact drag.
+                    dynamic_cast<Artifact*>(get_owner())->drag(input.get_x_run(), input.get_y_run());
                     DEBUG_INFO("DRAG: " << this);
                 }
                 switch(m) {
@@ -165,6 +160,7 @@ void PhysicalComponent::run(InputEngine * input) {
                     case _RCLICK: {
                         _status = RPUSHED;
                         // call artifact rclick.
+                        dynamic_cast<Artifact*>(get_owner())->right_click();
                         DEBUG_INFO("RCLICK: " << this);
                     } break;
                     default: break;
@@ -172,6 +168,7 @@ void PhysicalComponent::run(InputEngine * input) {
             } break;
             case LPUSHED_BLUR: {
                 // call artifact drag.
+                dynamic_cast<Artifact*>(get_owner())->drag(input.get_x_run(), input.get_y_run());
                 DEBUG_INFO("DRAG: " << this);
                 switch(m) {
                     case _LRELEASE: {
@@ -186,7 +183,7 @@ void PhysicalComponent::run(InputEngine * input) {
                 }
             } break;
             case OVER_WAITING: {
-                if (input->get_ticks() > (MAX_WAIT_FOR_DCLICK + _last_action_ticks)) {
+                if (input.get_ticks() > (MAX_WAIT_FOR_DCLICK + _last_action_ticks)) {
                     _status = OVER;
                     // call artifact lclick;
                     DEBUG_INFO("LCLICK: " << this);
@@ -196,11 +193,12 @@ void PhysicalComponent::run(InputEngine * input) {
                     case _RCLICK: {
                         _status = RPUSHED;
                         // call artifact rclick.
+                        dynamic_cast<Artifact*>(get_owner())->right_click();
                         DEBUG_INFO("RCLICK: " << this);
                     } break;
                     case _LCLICK: {
                         _status = LPUSHED2_OVER;
-                        _last_action_ticks_2 = input->get_ticks();
+                        _last_action_ticks_2 = input.get_ticks();
                     } break;
                     case _BLUR: {
                         _status = BLUR;
@@ -213,7 +211,7 @@ void PhysicalComponent::run(InputEngine * input) {
                 }
             } break;
             case LPUSHED2_OVER: {
-                if (input->get_ticks() > (MAX_WAIT_FOR_DCLICK + _last_action_ticks)) {
+                if (input.get_ticks() > (MAX_WAIT_FOR_DCLICK + _last_action_ticks)) {
                     _status = LPUSHED_OVER;
                     _last_action_ticks = _last_action_ticks_2;
                     continue;
@@ -222,6 +220,7 @@ void PhysicalComponent::run(InputEngine * input) {
                     case _RCLICK: {
                         _status = RPUSHED;
                         // call artifact rclick.
+                        dynamic_cast<Artifact*>(get_owner())->right_click();
                         DEBUG_INFO("RCLICK: " << this);
                     } break;
                     case _BLUR: {
@@ -231,7 +230,7 @@ void PhysicalComponent::run(InputEngine * input) {
                     } break;
                     case _LRELEASE: {
                         _status = OVER;
-                        if (input->get_ticks() < (MAX_WAIT_FOR_DCLICK + _last_action_ticks)) {
+                        if (input.get_ticks() < (MAX_WAIT_FOR_DCLICK + _last_action_ticks)) {
                             // call artifact dlclick.
                             DEBUG_INFO("DLCLICK: " << this);
                         } else {
@@ -245,7 +244,7 @@ void PhysicalComponent::run(InputEngine * input) {
             case RPUSHED: {
                 switch(m) {
                     case _RRELEASE: {
-                        if (input->collide_color() == _color) {
+                        if (input.collide_color() == _color) {
                             _status = OVER;
                         } else {
                             _status = BLUR;

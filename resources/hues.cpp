@@ -32,11 +32,6 @@ void HuesGroup::read(FILE * f) {
     fread((void *)&header, sizeof(uo_dword), 1, f);
 }
 
-HuesManager * HuesManager::get() {
-    static HuesManager _hm;
-    return &_hm;
-}
-
 
 void HuesManager::init(const char * findex) {
     _findex = fopen(findex, "rb");

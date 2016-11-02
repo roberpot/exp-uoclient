@@ -11,11 +11,6 @@
 #include "video.h"
 
 
-VideoEngine  *VideoEngine::get() {
-    static VideoEngine _v;
-    return &_v;
-}
-
 void VideoEngine::init_subsystem() {
     if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0 ) {
         DEBUG_ERROR("Unable to init SDL: " << SDL_GetError());

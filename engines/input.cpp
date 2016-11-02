@@ -9,22 +9,12 @@
 #include "../common/utils.h"
 
 
-InputEngine::InputEngine() {
+void InputEngine::init_subsystem() {
     _continue_execution = true;
     _collide_color = 0;
     _mouse_status = 0;
     _x = 0;
     _y = 0;
-}
-
-InputEngine  *InputEngine::get() {
-    static InputEngine _i;
-    return &_i;
-}
-
-
-void InputEngine::init_subsystem() {
-
 }
 
 void InputEngine::halt_subsystem() {
@@ -47,7 +37,10 @@ void InputEngine::run() {
             }
         } // end switch
     } // end of message processing
+    int old_x = _x, old_y = _y;
     unsigned int buttons = SDL_GetMouseState(&_x, &_y);
+    _x_run = _x - old_x;
+    _y_run = _y - old_y;
     unsigned short old_status = _mouse_status;
     if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
         UNSET_FLAG(_mouse_status, INPUT_LRELEASE);
@@ -101,5 +94,5 @@ void InputEngine::run() {
         }
     }
     _ticks_update = SDL_GetTicks();
-    _collide_color = VideoEngine::get()->get_collor_at_position(_x, _y);
+    _collide_color = video.get_collor_at_position(_x, _y);
 }

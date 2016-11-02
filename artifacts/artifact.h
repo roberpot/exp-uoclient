@@ -8,6 +8,8 @@
 
 class Artifact {
 public:
+    virtual void move(int x, int y, int z);
+    virtual void drag(int x, int y);
     virtual void left_click();
     virtual void right_click();
     virtual void left_release();

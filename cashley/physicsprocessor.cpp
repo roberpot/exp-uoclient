@@ -14,8 +14,7 @@ void PhysicsProcessor::run_tick(unsigned int delay) {
     CAshley::EntityArray v;
     f.filter<PhysicalComponent>();
     v = this->_engine->get_entities_for(f);
-    VideoEngine * video = VideoEngine::get();
-    video->clear();
+    video.clear();
     for (unsigned int i = 0; i < v.size(); i++) {
         v[i]->get_component<PhysicalComponent>()->display();
     }

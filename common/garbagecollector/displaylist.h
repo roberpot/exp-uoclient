@@ -14,7 +14,7 @@
 #include "resourcereferencer.h"
 
 
-class DisplayList : public ReferencedResource {
+class DisplayList : public AutoRemovedResource {
 public:
     DisplayList();
     ~DisplayList();

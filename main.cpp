@@ -19,23 +19,16 @@ int main(int argc, char * argv[]) {
     UNREFERENCED_PARAMETER(argc);
     UNREFERENCED_PARAMETER(argv);
     debug_init();
-    // Engines.
-    VideoEngine * video = VideoEngine::get();
-    InputEngine * input = InputEngine::get();
-    // Resources.
-    GumpManager * gumpmanager = GumpManager::get();
-    FontManager * fontmanager = FontManager::get();
-    HuesManager * huesmanager = HuesManager::get();
 
     // Initialize systems.
     SDL_Init(0);
     atexit(SDL_Quit);
-    video->init_subsystem();
-    input->init_subsystem();
+    video.init_subsystem();
+    input.init_subsystem();
     // Initialize resources.
-    gumpmanager->init("gumpidx.mul", "gumpart.mul");
-    fontmanager->init("fonts.mul");
-    huesmanager->init("hues.mul");
+    gumpmanager.init("gumpidx.mul", "gumpart.mul");
+    fontmanager.init("fonts.mul");
+    huesmanager.init("hues.mul");
 
     // IUnitialize cashley engine.
     CAshley::Engine * engine = new CAshley::Engine;
@@ -50,7 +43,7 @@ int main(int argc, char * argv[]) {
 
     unsigned int ticks_init, ticks_end;
 
-    while (input->continue_execution()) {
+    while (input.continue_execution()) {
         ticks_init = SDL_GetTicks();
         engine->run_tick(1);
         ticks_end = SDL_GetTicks();
@@ -59,10 +52,10 @@ int main(int argc, char * argv[]) {
     loginform->disable();
     delete loginform;
     delete engine;
-    gumpmanager->halt();
-    fontmanager->halt();
-    video->halt_subsystem();
-    input->halt_subsystem();
+    gumpmanager.halt();
+    fontmanager.halt();
+    video.halt_subsystem();
+    input.halt_subsystem();
     debug_halt();
     return 0;
 }

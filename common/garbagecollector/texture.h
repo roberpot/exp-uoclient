@@ -10,7 +10,7 @@
 #include <SDL2/SDL.h>
 
 
-class Texture : public ReferencedResource {
+class Texture : public AutoRemovedResource {
 public:
     Texture(SDL_Surface * surface);
     Texture(unsigned int width, unsigned int height, void * rawpixels);

@@ -10,16 +10,16 @@
 
 void VisualComponent::init() {
     data = new VisualComponentData;
-    _displaylist = glGenLists(1);
+    _dl = ResourceRef<DisplayList>(new DisplayList);
 }
 
 
-void VisualComponent::setup_with_dl(int x, int y, int z, unsigned int dl, unsigned int flags) {
+void VisualComponent::setup_with_dl(int x, int y, int z, ResourceRef<DisplayList> dl, unsigned int flags) {
     data->w = 0;
     data->h = 0;
     data->texture = 0;
     data->flags = flags;
-    data->internal_dl = dl;
+    data->_dl = dl;
     move(x, y, z);
 }
 
@@ -35,24 +35,23 @@ void VisualComponent::move(int x, int y, int z) {
     data->x = x;
     data->y = y;
     data->z = z;
-    glDeleteLists(_displaylist, 1);
-    glNewList(_displaylist, GL_COMPILE);
+    _dl()->init_compilation();
     if (data->flags & GC_F_INTERNAL_DL) {
         glPushMatrix();
         glTranslated(x, y, z);
-        glCallList(data->internal_dl);
+        data->_dl()->display();
         glPopMatrix();
     } else {
         display_textured_square(x, y, data->w, data->h, z, data->texture.get()->get());
     }
-    glEndList();
+    _dl()->end_compilation();
 }
 
 void VisualComponent::shutdown() {
-    glDeleteLists(_displaylist, 1);
+    _dl = ResourceRef<DisplayList>();
     delete data;
 }
 
 void VisualComponent::display() {
-    glCallList(_displaylist);
+    _dl()->display();
 }

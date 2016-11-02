@@ -16,6 +16,7 @@ public:
     virtual ~BaseGump() {}
 protected:
     Form * _form;
+    unsigned int _x, _y;
 };
 
 

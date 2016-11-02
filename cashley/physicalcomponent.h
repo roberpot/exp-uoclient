@@ -7,6 +7,7 @@
 
 #include <cashley/cashley.h>
 #include "../common/garbagecollector/texture.h"
+#include "../common/garbagecollector/displaylist.h"
 
 #define PC_F_NONE         0x0000
 #define PC_F_INTERNAL_DL  0x0001
@@ -16,7 +17,8 @@
 class PhysicalComponentData {
 public:
     int x, y, w, h, z;
-    unsigned int flags, internal_dl;
+    unsigned int flags;
+    ResourceRef<DisplayList> _dl;
     ResourceRef<Texture> texture;
 };
 
@@ -28,11 +30,11 @@ public:
     void shutdown();
 //    void setup();
     void setup(int x, int y, int w, int h, int z, ResourceRef<Texture> texture, unsigned int flags = PC_F_NONE);
-    void setup_with_dl(int x, int y, int z, unsigned int dl, unsigned int flags = PC_F_INTERNAL_DL);
+    void setup_with_dl(int x, int y, int z, ResourceRef<DisplayList> dl, unsigned int flags = PC_F_INTERNAL_DL);
     void move(int x, int y, int z);
     void display();
     void reset_status();
-    void run(InputEngine * input);
+    void run();
     unsigned int get_color() { return _color; }
     CASHLEY_COMPONENT
 private:
@@ -46,7 +48,7 @@ private:
         RPUSHED,
     } _status;
     unsigned int _color;
-    unsigned int _displaylist;
+    ResourceRef<DisplayList> _dl;
     unsigned int _last_action_ticks;
     unsigned int _last_action_ticks_2;
     static unsigned int _color_serial;
