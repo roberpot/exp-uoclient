@@ -64,7 +64,7 @@ void ResizePic::_prerender(int w, int h, unsigned int color) {
     // Right.
     display_textured_square(interx2, intery1, _ginforefs[5]()->width(), intery2 - intery1, 0, tmptex[5].get()->get());
     // Center
-    display_textured_square(interx1, intery1, interx2 - interx1, intery2 - intery1, 0, tmptex[4].get()->get());
+    display_textured_square(interx1, intery1, interx2 - interx1, intery2 - intery1, 0, tmptex[4].get()->get(), _ginforefs[4]()->width(), _ginforefs[4]()->height());
 }
 
 void ResizePic::move(int x, int y, int z) {
