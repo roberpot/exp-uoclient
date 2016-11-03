@@ -13,7 +13,8 @@ class BaseGump : public Artifact {
 public:
     void init(Form * f);
     Form * form();
-    virtual ~BaseGump() {}
+    virtual void shutdown() {}
+    virtual ~BaseGump() { DEBUG_MSG("~BASEGUMP"); }
 protected:
     Form * _form;
     unsigned int _x, _y;

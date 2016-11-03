@@ -17,8 +17,14 @@ Form::Form(CAshley::Engine * engine, uo_char flags) {
 Form::~Form() {
     disable();
     while(_gumps.size()) {
+        DEBUG_MSG("SIZE: " << _gumps.size());
         BaseGump * g = _gumps.back();
         _gumps.pop_back();
+        DEBUG_MSG("SHUTDOWN!");
+        dynamic_cast<BaseGump *>(g)->shutdown();
+        DEBUG_MSG("REMOVE!");
+        _engine->remove_entity(dynamic_cast<CAshley::Entity *>(g));
+        DEBUG_MSG("DELETE!");
         delete g;
     }
 }

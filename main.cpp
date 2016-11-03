@@ -39,8 +39,12 @@ int main(int argc, char * argv[]) {
     engine->add_processor<VisualProcessor>(2);
     engine->get_processor<VisualProcessor>()->activate();
     Form * loginform = form_login(engine);
-    loginform->enable();
+//    Form * f2 = form_login(engine);
 
+    loginform->enable();
+//    f2->enable();
+    loginform->disable();
+    delete loginform;
     unsigned int ticks_init, ticks_end;
 
     while (input.continue_execution()) {
@@ -49,8 +53,8 @@ int main(int argc, char * argv[]) {
         ticks_end = SDL_GetTicks();
         SDL_Delay(MAX(50 + ticks_init, ticks_end) - ticks_end);
     }
-    loginform->disable();
-    delete loginform;
+//    loginform->disable();
+//    delete loginform;
     delete engine;
     gumpmanager.halt();
     fontmanager.halt();
