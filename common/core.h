@@ -13,12 +13,13 @@ extern class Core {
 public:
     Core();
     unsigned int add_form(Form * f);
-    unsigned int enable_form(unsigned int uid);
-    bool is_focused(unsigned int layer);
-    unsigned int focus(unsigned int layer);
+    int enable_form(unsigned int uid);
+    bool is_focused(int layer);
+    int focus(int layer);
 private:
-    unsigned int _form_uids, _highest_layer;
-    std::map<unsigned int, Form *> _forms, _displayed_forms;
+    unsigned int _form_uids;
+    int _highest_layer;
+    std::map<int, Form *> _forms, _displayed_forms;
 //    std::map<
 } core;
 

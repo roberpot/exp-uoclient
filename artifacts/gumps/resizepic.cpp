@@ -15,7 +15,9 @@ void ResizePic::init(Form * f, uo_dword gumpid, unsigned int x, unsigned int y, 
     _x = x;
     _y = y;
     add_component<VisualComponent>();
+    add_component<PhysicalComponent>();
     VisualComponent * vcomp = get_component<VisualComponent>();
+    PhysicalComponent * pcomp = get_component<PhysicalComponent>();
     for (unsigned int i = 0; i < 9; i++) {
         _ginforefs[i] = gumpmanager[gumpid + i];
     }
@@ -23,8 +25,6 @@ void ResizePic::init(Form * f, uo_dword gumpid, unsigned int x, unsigned int y, 
     _dl()->init_compilation();
     _prerender(w, h);
     _dl()->end_compilation();
-    add_component<PhysicalComponent>();
-    PhysicalComponent * pcomp = get_component<PhysicalComponent>();
     _dl2 = ResourceRef<DisplayList>(new DisplayList);
     _dl2()->init_compilation();
     _prerender(w, h, pcomp->get_color());
@@ -38,9 +38,9 @@ void ResizePic::_prerender(int w, int h, unsigned int color) {
     ResourceRef<Texture> tmptex[9];
     for (unsigned int i = 0; i < 9; i++) {
         if (color) {
-            tmptex[i] = _ginforefs[i]()->texturize(color);
+            _flattextures[i] = tmptex[i] = _ginforefs[i]()->texturize(color);
         } else {
-            _flattextures[i] = tmptex[i] = _ginforefs[i]()->texturize();
+            tmptex[i] = _ginforefs[i]()->texturize();
         }
     }
     interx1 = _ginforefs[0]()->width();

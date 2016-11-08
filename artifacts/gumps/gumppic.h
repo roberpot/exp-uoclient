@@ -18,6 +18,7 @@ public:
     void drag(int x, int y);
     void right_click();
     void shutdown();
+    ~GumpPic() {}
     CASHLEY_ENTITY
 private:
     ResourceRef<GumpInfo> _gumpref;

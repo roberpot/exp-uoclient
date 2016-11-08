@@ -30,7 +30,7 @@ int main(int argc, char * argv[]) {
     fontmanager.init("fonts.mul");
     huesmanager.init("hues.mul");
 
-    // IUnitialize cashley engine.
+    // Initialize cashley engine.
     CAshley::Engine * engine = new CAshley::Engine;
     engine->add_processor<PhysicsProcessor>(0);
     engine->get_processor<PhysicsProcessor>()->activate();
@@ -38,13 +38,12 @@ int main(int argc, char * argv[]) {
     engine->get_processor<InputProcessor>()->activate();
     engine->add_processor<VisualProcessor>(2);
     engine->get_processor<VisualProcessor>()->activate();
-    Form * loginform = form_login(engine);
-//    Form * f2 = form_login(engine);
-
-    loginform->enable();
-//    f2->enable();
-    loginform->disable();
-    delete loginform;
+    Form * f1 = form_login(engine);
+    Form * f2 = form_login(engine);
+//    Form * f3 = form_login(engine);
+    f1->enable();
+    f2->enable();
+//    f3->enable();
     unsigned int ticks_init, ticks_end;
 
     while (input.continue_execution()) {
@@ -53,8 +52,10 @@ int main(int argc, char * argv[]) {
         ticks_end = SDL_GetTicks();
         SDL_Delay(MAX(50 + ticks_init, ticks_end) - ticks_end);
     }
-//    loginform->disable();
-//    delete loginform;
+    f1->disable();
+    f2->disable();
+    delete f1;
+    delete f2;
     delete engine;
     gumpmanager.halt();
     fontmanager.halt();

@@ -9,6 +9,7 @@
 
 #include "basegump.h"
 #include "../../common/types.h"
+#include "../../common/debug.h"
 #include "../../common/garbagecollector/texture.h"
 #include "../../resources/gump.h"
 #include "../../common/garbagecollector/displaylist.h"
@@ -21,6 +22,7 @@ public:
     void drag(int x, int y);
     void right_click();
     void shutdown();
+    ~ResizePic() {}
     CASHLEY_ENTITY
 private:
     void _prerender(int w, int h, unsigned int color=0);

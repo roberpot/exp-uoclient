@@ -14,7 +14,7 @@ void GumpPic::init(Form * f, uo_dword gumpid, unsigned int x, unsigned int y) {
     _x = x;
     _y = y;
     _gumpref = gumpmanager[gumpid];
-        // Graphical component.
+    // Graphical component.
     add_component<VisualComponent>();
     get_component<VisualComponent>()->setup(x, y, _gumpref()->width(), _gumpref()->height(), 0, _gumpref()->texturize(), 0);
     // Physical component.
@@ -28,6 +28,7 @@ void GumpPic::move(int x, int y, int z) {
 }
 
 void GumpPic::drag(int x, int y) {
+    DEBUG_MSG(this << " " << _form);
     _form->move(x, y);
 }
 

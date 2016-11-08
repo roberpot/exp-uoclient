@@ -49,7 +49,10 @@ void VisualComponent::move(int x, int y, int z) {
 
 void VisualComponent::shutdown() {
     _dl = ResourceRef<DisplayList>();
-    delete data;
+    if (data) {
+        delete data;
+        data = 0;
+    }
 }
 
 void VisualComponent::display() {

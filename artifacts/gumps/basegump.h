@@ -6,6 +6,7 @@
 #define __UONEWCLIENT_BASEGUMP_H
 
 #include "../artifact.h"
+#include "../../common/debug.h"
 
 class Form;
 
@@ -14,7 +15,7 @@ public:
     void init(Form * f);
     Form * form();
     virtual void shutdown() {}
-    virtual ~BaseGump() { DEBUG_MSG("~BASEGUMP"); }
+    virtual ~BaseGump() { }
 protected:
     Form * _form;
     unsigned int _x, _y;

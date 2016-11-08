@@ -8,8 +8,7 @@
 
 Form * form_login(CAshley::Engine * e) {
     Form * f = new Form(e);
-    GumpPic * gumpic;
-    gumpic = new GumpPic;
+    GumpPic * gumpic = new GumpPic;
     gumpic->init(f, 9001, 0, 0);
     ResizePic * resizepic = new ResizePic;
     resizepic->init(f, 5054, 130, 289, 451, 157);

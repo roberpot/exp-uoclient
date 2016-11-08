@@ -43,7 +43,7 @@ void PhysicalComponent::setup_with_dl(int x, int y, int z, ResourceRef<DisplayLi
     data->w = 0;
     data->h = 0;
     data->texture = 0;
-    data->flags = flags | GC_F_INTERNAL_DL;
+    data->flags = flags;
     data->_dl = dl;
     move(x, y, z);
 }
@@ -55,11 +55,11 @@ void PhysicalComponent::move(int x, int y, int z) {
     _dl()->init_compilation();
     if (data->flags & GC_F_INTERNAL_DL) {
         glPushMatrix();
-        glTranslated(x, y, data->z);
+        glTranslated(x, y, z);
         data->_dl()->display();
         glPopMatrix();
     } else {
-        display_textured_square(x, y, data->w, data->h, data->z, data->texture.get()->get());
+        display_textured_square(x, y, data->w, data->h, data->z, data->texture()->get());
     }
     _dl()->end_compilation();
 }
@@ -117,7 +117,6 @@ void PhysicalComponent::run() {
                     case _OVER: {
                         _status = OVER;
                         // call artifact over.
-                        DEBUG_INFO("OVER: " << this);
                     }
                     default: break;
                 }
@@ -127,7 +126,6 @@ void PhysicalComponent::run() {
                     case _BLUR: {
                         _status = BLUR;
                         // call artifact blur.
-                        DEBUG_INFO("BLUR: " << this);
                     } break;
                     case _LCLICK: {
                         _status = LPUSHED_OVER;
@@ -137,7 +135,6 @@ void PhysicalComponent::run() {
                         _status = RPUSHED;
                         // call artifact rclick.
                         dynamic_cast<Artifact*>(get_owner())->right_click();
-                        DEBUG_INFO("RCLICK: " << this);
                     } break;
                     default: break;
                 }
@@ -146,13 +143,11 @@ void PhysicalComponent::run() {
                 if (!(data->flags & PC_F_DRAG_DELAYED) || (input.get_ticks() - _last_action_ticks > MAX_WAIT_FOR_DRAG)) {
                     // call artifact drag.
                     dynamic_cast<Artifact*>(get_owner())->drag(input.get_x_run(), input.get_y_run());
-                    DEBUG_INFO("DRAG: " << this);
                 }
                 switch(m) {
                     case _BLUR: {
                         _status = LPUSHED_BLUR;
                         // call artifact blur.
-                        DEBUG_INFO("BLUR: " << this);
                     } break;
                     case _LRELEASE: {
                         _status = OVER_WAITING;
@@ -161,7 +156,6 @@ void PhysicalComponent::run() {
                         _status = RPUSHED;
                         // call artifact rclick.
                         dynamic_cast<Artifact*>(get_owner())->right_click();
-                        DEBUG_INFO("RCLICK: " << this);
                     } break;
                     default: break;
                 }
@@ -169,7 +163,6 @@ void PhysicalComponent::run() {
             case LPUSHED_BLUR: {
                 // call artifact drag.
                 dynamic_cast<Artifact*>(get_owner())->drag(input.get_x_run(), input.get_y_run());
-                DEBUG_INFO("DRAG: " << this);
                 switch(m) {
                     case _LRELEASE: {
                         _status = BLUR;
@@ -177,7 +170,6 @@ void PhysicalComponent::run() {
                     case _OVER: {
                         _status = LPUSHED_OVER;
                         // call artifact over.
-                        DEBUG_INFO("OVER: " << this);
                     } break;
                     default: break;
                 }
@@ -186,7 +178,6 @@ void PhysicalComponent::run() {
                 if (input.get_ticks() > (MAX_WAIT_FOR_DCLICK + _last_action_ticks)) {
                     _status = OVER;
                     // call artifact lclick;
-                    DEBUG_INFO("LCLICK: " << this);
                     continue;
                 }
                 switch(m) {
@@ -194,7 +185,6 @@ void PhysicalComponent::run() {
                         _status = RPUSHED;
                         // call artifact rclick.
                         dynamic_cast<Artifact*>(get_owner())->right_click();
-                        DEBUG_INFO("RCLICK: " << this);
                     } break;
                     case _LCLICK: {
                         _status = LPUSHED2_OVER;
@@ -204,8 +194,6 @@ void PhysicalComponent::run() {
                         _status = BLUR;
                         // call artifact blur.
                         // call artifact lclick.
-                        DEBUG_INFO("BLUR: " << this);
-                        DEBUG_INFO("LCLICK: " << this);
                     } break;
                     default: break;
                 }
@@ -221,21 +209,17 @@ void PhysicalComponent::run() {
                         _status = RPUSHED;
                         // call artifact rclick.
                         dynamic_cast<Artifact*>(get_owner())->right_click();
-                        DEBUG_INFO("RCLICK: " << this);
                     } break;
                     case _BLUR: {
                         _status = LPUSHED_BLUR;
                         // call artifact blur.
-                        DEBUG_INFO("BLUR: " << this);
                     } break;
                     case _LRELEASE: {
                         _status = OVER;
                         if (input.get_ticks() < (MAX_WAIT_FOR_DCLICK + _last_action_ticks)) {
                             // call artifact dlclick.
-                            DEBUG_INFO("DLCLICK: " << this);
                         } else {
                             // call artifact lclick.
-                            DEBUG_INFO("LCLICK: " << this);
                         }
                     } break;
                     default: break;

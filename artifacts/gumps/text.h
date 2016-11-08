@@ -19,6 +19,7 @@ public:
     void init(Form * f, unsigned int font, std::string t, unsigned int x, unsigned int y);
     void move(int x, int y, int z);
     void shutdown();
+    ~Text() {}
 private:
     ResourceRef<DisplayList> _text;
 };

@@ -26,7 +26,8 @@ public:
 private:
     uo_char _flags;
     unsigned int _uid;
-    unsigned int _x, _y, _z;
+    unsigned int _x, _y;
+    int _z;
     std::vector<BaseGump *> _gumps;
     CAshley::Engine * _engine;
 };

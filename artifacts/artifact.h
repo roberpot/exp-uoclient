@@ -5,6 +5,7 @@
 #ifndef __UONEWCLIENT_ARTIFACT_H
 #define __UONEWCLIENT_ARTIFACT_H
 
+#include "../common/debug.h"
 
 class Artifact {
 public:
@@ -14,7 +15,7 @@ public:
     virtual void right_click();
     virtual void left_release();
     virtual void right_release();
-    virtual ~Artifact() {}
+    virtual ~Artifact() { }
 private:
 };
 
