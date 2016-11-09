@@ -23,15 +23,6 @@ void Text::init(Form * f, unsigned int font, const char * t, unsigned int x, uns
     vcomp->setup_with_dl(x, y, 0, _text);
 }
 
-void Text::init(Form * f, unsigned int font, std::string t, unsigned int x, unsigned int y) {
-    init(f, font, t.c_str(), x, y);
-}
-
-void Text::move(int x, int y, int z) {
-    get_component<VisualComponent>()->move(x + _x, y + _y, z);
-}
-
-
 void Text::init(Form * f, unsigned int font, const char * t, unsigned int x, unsigned int y, uo_dword huesentry) {
     BaseGump::init(f);
     _x = x;
@@ -43,8 +34,8 @@ void Text::init(Form * f, unsigned int font, const char * t, unsigned int x, uns
     vcomp->setup_with_dl(x, y, 0, _text);
 }
 
-void Text::init(Form * f, unsigned int font, std::string t, unsigned int x, unsigned int y, uo_dword huesentry) {
-    init(f, font, t.c_str(), x, y, huesentry);
+void Text::move(int x, int y, int z) {
+    get_component<VisualComponent>()->move(x + _x, y + _y, z);
 }
 
 void Text::shutdown() {

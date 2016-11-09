@@ -9,5 +9,6 @@
 #include "gumppic.h"
 #include "resizepic.h"
 #include "text.h"
+#include "textentry.h"
 
 #endif //__UONEWCLIENT_GUMPS_H

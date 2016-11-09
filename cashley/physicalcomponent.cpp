@@ -38,6 +38,13 @@ void PhysicalComponent::setup(int x, int y, int w, int h, int z, ResourceRef<Tex
     move(x, y, z);
 }
 
+void PhysicalComponent::setup(int x, int y, int w, int h, int z, unsigned int flags) {
+    data->w = w;
+    data->h = h;
+    data->flags = flags;
+    move(x, y, z);
+}
+
 
 void PhysicalComponent::setup_with_dl(int x, int y, int z, ResourceRef<DisplayList> dl, unsigned int flags) {
     data->w = 0;
@@ -53,11 +60,13 @@ void PhysicalComponent::move(int x, int y, int z) {
     data->y = y;
     data->z = z;
     _dl()->init_compilation();
-    if (data->flags & GC_F_INTERNAL_DL) {
+    if (data->flags & PC_F_INTERNAL_DL) {
         glPushMatrix();
         glTranslated(x, y, z);
         data->_dl()->display();
         glPopMatrix();
+    } else if (data->flags & PC_F_DISPLAY_FLAT) {
+        display_colored_square(x, y, data->w, data->h, z, _color);
     } else {
         display_textured_square(x, y, data->w, data->h, data->z, data->texture()->get());
     }
@@ -178,6 +187,7 @@ void PhysicalComponent::run() {
                 if (input.get_ticks() > (MAX_WAIT_FOR_DCLICK + _last_action_ticks)) {
                     _status = OVER;
                     // call artifact lclick;
+                    dynamic_cast<Artifact*>(get_owner())->left_click();
                     continue;
                 }
                 switch(m) {
@@ -194,6 +204,7 @@ void PhysicalComponent::run() {
                         _status = BLUR;
                         // call artifact blur.
                         // call artifact lclick.
+                        dynamic_cast<Artifact*>(get_owner())->left_click();
                     } break;
                     default: break;
                 }
@@ -220,6 +231,7 @@ void PhysicalComponent::run() {
                             // call artifact dlclick.
                         } else {
                             // call artifact lclick.
+                            dynamic_cast<Artifact*>(get_owner())->left_click();
                         }
                     } break;
                     default: break;

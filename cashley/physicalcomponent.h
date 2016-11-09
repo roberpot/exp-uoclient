@@ -12,6 +12,7 @@
 #define PC_F_NONE         0x0000
 #define PC_F_INTERNAL_DL  0x0001
 #define PC_F_DRAG_DELAYED 0x0002
+#define PC_F_DISPLAY_FLAT 0x0004
 
 
 class PhysicalComponentData {
@@ -30,6 +31,7 @@ public:
     void shutdown();
 //    void setup();
     void setup(int x, int y, int w, int h, int z, ResourceRef<Texture> texture, unsigned int flags = PC_F_NONE);
+    void setup(int x, int y, int w, int h, int z, unsigned int flags = PC_F_NONE);
     void setup_with_dl(int x, int y, int z, ResourceRef<DisplayList> dl, unsigned int flags = PC_F_INTERNAL_DL);
     void move(int x, int y, int z);
     void display();
