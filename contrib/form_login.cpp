@@ -3,7 +3,6 @@
 //
 
 #include "form_login.h"
-#include "../common/types.h"
 
 
 Form * form_login(CAshley::Engine * e) {
@@ -26,10 +25,5 @@ Form * form_login(CAshley::Engine * e) {
     resizepic->init(f, 9350, 329, 344, 209, 30);
     resizepic = new ResizePic;
     resizepic->init(f, 9350, 329, 384, 209, 30);
-//    = new ResizePic;
-//    gumpic = new GumpPic;
-//    gumpic->init(f, 6, 50, 50, 8);
-//    gumpic = new GumpPic;
-//    gumpic->init(f, 12, 150, 150, 7);
     return f;
 }

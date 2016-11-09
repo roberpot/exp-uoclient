@@ -28,7 +28,6 @@ void GumpPic::move(int x, int y, int z) {
 }
 
 void GumpPic::drag(int x, int y) {
-    DEBUG_MSG(this << " " << _form);
     _form->move(x, y);
 }
 

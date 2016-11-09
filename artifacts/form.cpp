@@ -51,7 +51,6 @@ void Form::close() {
 }
 
 void Form::move(int x, int y) {
-    DEBUG_MSG(this);
     bool redraw = false;
     if (!(_flags & FORM_FLAG_NOMOVE)) {
         _x += x;
