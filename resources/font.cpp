@@ -3,8 +3,7 @@
 //
 
 #include <cstdio>
-
-#include <GL/gl.h>
+#include <map>
 
 #include "../common/colorutils.h"
 #include "../common/debug.h"
@@ -21,17 +20,33 @@ public:
     Glyph(uo_byte w, uo_byte h, uo_byte header, unsigned int * pixels);
     ~Glyph();
     void render(int x, int y);
+    void render(int x, int y, uo_dword huesentry);
     unsigned int w() { return (unsigned int)_w; }
     unsigned int h() { return (unsigned int)_h; }
 private:
+    void _prerender(uo_dword huesentry);
     uo_byte _w, _h, _header;
+    uo_uword * _raw_hueslookup;
     ResourceRef<Texture> _t;
+    std::map<uo_dword, ResourceRef<Texture> > _t_hues;
 };
 
 Glyph::Glyph(uo_byte w, uo_byte h, uo_byte header, unsigned int * pixels) {
     _w = w;
     _h = h;
     _header = header;
+    int size = _w * _h;
+    _raw_hueslookup = new uo_uword[size];
+    memset(_raw_hueslookup, 0xFFFF, sizeof(uo_uword) * size);
+    unsigned int * source_pixel = pixels;
+    uo_uword * target_pixel = _raw_hueslookup;
+    for (int i = 0; i < size; i++) {
+        if (*source_pixel) {
+            *target_pixel = get_huetable_lookup(*source_pixel);
+        }
+        source_pixel++;
+        target_pixel++;
+    }
     _t = ResourceRef<Texture>(new Texture(_w, _h, pixels));
 }
 
@@ -39,7 +54,32 @@ Glyph::~Glyph() {
 }
 
 void Glyph::render(int x, int y) {
-    display_textured_square(x, y, _w, _h, 0, _t.get()->get());
+    display_textured_square(x, y, _w, _h, 0, _t()->get());
+}
+
+void Glyph::render(int x, int y, uo_dword huesentry) {
+    if (!_t_hues.count(huesentry)) {
+        _prerender(huesentry);
+    }
+    display_textured_square(x, y, _w, _h, 0, _t_hues[huesentry]()->get());
+}
+
+void Glyph::_prerender(uo_dword huesentry) {
+    int size = _w * _h;
+    unsigned int * pixels = new unsigned int[size];
+    memset(pixels, 0, sizeof(unsigned int) * size);
+    HuesEntry hue = huesmanager[huesentry];
+    unsigned int * target_pixel = pixels;
+    uo_uword * source_pixel = _raw_hueslookup;
+    for (int i = 0; i < size; i++) {
+        if (*source_pixel != 0xFFFF) {
+            *target_pixel = hue.uicolortable[*source_pixel] | 0xFF000000;
+        }
+        source_pixel++;
+        target_pixel++;
+    }
+    _t_hues[huesentry] = ResourceRef<Texture>(new Texture(_w, _h, pixels));
+    delete pixels;
 }
 
 Font::Reference::Reference(Font * f, unsigned int i) {
@@ -96,6 +136,19 @@ ResourceRef<DisplayList> Font::rasterize(const char * buffer) {
     for(unsigned int i = 0; i < strlen(buffer); i++) {
         Glyph * g = glyphs[buffer[i] - 32];
         g->render(index, _max_height - g->h());
+        index += g->w();
+    }
+    res()->end_compilation();
+    return res;
+}
+
+ResourceRef<DisplayList> Font::rasterize(const char * buffer, uo_dword huesentry) {
+    unsigned int index = 0;
+    ResourceRef<DisplayList> res(new DisplayList);
+    res()->init_compilation();
+    for(unsigned int i = 0; i < strlen(buffer); i++) {
+        Glyph * g = glyphs[buffer[i] - 32];
+        g->render(index, _max_height - g->h(), huesentry);
         index += g->w();
     }
     res()->end_compilation();
@@ -163,4 +216,8 @@ void FontManager::halt() {
 
 ResourceRef<DisplayList> FontManager::rasterize(unsigned int f, const char * buffer) {
     return fonts[f]->rasterize(buffer);
+}
+
+ResourceRef<DisplayList> FontManager::rasterize(unsigned int f, const char * buffer, uo_dword huesentry) {
+    return fonts[f]->rasterize(buffer, huesentry);
 }

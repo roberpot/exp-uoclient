@@ -78,8 +78,8 @@ ResourceRef<Texture> GumpInfo::texturize() {
     return _t;
 }
 
-unsigned int GumpInfo::texturize(HuesEntry e, bool from_gray) {
-    UNUSED_PARAMETER(e);
+ResourceRef<Texture> GumpInfo::texturize(uo_dword huesentry, bool from_gray) {
+    HuesEntry hue = huesmanager[huesentry];
     UNUSED_PARAMETER(from_gray);
     return 0;
 }

@@ -48,17 +48,27 @@ void HuesManager::init(const char * findex) {
         return;
     }
     DEBUG_MSG("Size of hues.mul: " << length << " bytes. Total colors groups: " << (length / sizeof(HuesGroup)));
+    uo_dword hues_index = 0;
     while (! feof(_findex)) {
         uo_dword groupindex = (uo_dword)ftell(_findex);
         HuesGroup huesgroup;
         huesgroup.read(_findex);
         for (unsigned int i = 0; i < 8; i++) {
             HuesEntry huesentry;
-            uo_dword huesindex = (uo_dword)ftell(_findex);
+//            uo_dword huesindex = (uo_dword)ftell(_findex);
             huesentry.read(_findex);
-            huesgroup.entries[i] = huesindex;
-            huesentries[huesindex] = huesentry;
+            huesgroup.entries[i] = hues_index;
+            huesentries[hues_index] = huesentry;
+            hues_index++;
         }
         huesgroups[groupindex] = huesgroup;
     }
+}
+
+void HuesManager::halt() {
+
+}
+
+HuesEntry HuesManager::operator[](uo_dword i) {
+    return huesentries[i];
 }

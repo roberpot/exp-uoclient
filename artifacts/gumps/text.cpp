@@ -21,10 +21,6 @@ void Text::init(Form * f, unsigned int font, const char * t, unsigned int x, uns
     VisualComponent * vcomp = get_component<VisualComponent>();
     _text = fontmanager.rasterize(font, t);
     vcomp->setup_with_dl(x, y, 0, _text);
-    // Physical component.
-    // Physical component.
-//    add_component<PhysicalComponent>();
-//    this->get_component<PhysicalComponent>()->init();
 }
 
 void Text::init(Form * f, unsigned int font, std::string t, unsigned int x, unsigned int y) {
@@ -33,7 +29,22 @@ void Text::init(Form * f, unsigned int font, std::string t, unsigned int x, unsi
 
 void Text::move(int x, int y, int z) {
     get_component<VisualComponent>()->move(x + _x, y + _y, z);
-//    get_component<PhysicalComponent>()->move(x + _x, y + _y, z);
+}
+
+
+void Text::init(Form * f, unsigned int font, const char * t, unsigned int x, unsigned int y, uo_dword huesentry) {
+    BaseGump::init(f);
+    _x = x;
+    _y = y;
+    // Graphical component.
+    add_component<VisualComponent>();
+    VisualComponent * vcomp = get_component<VisualComponent>();
+    _text = fontmanager.rasterize(font, t, huesentry);
+    vcomp->setup_with_dl(x, y, 0, _text);
+}
+
+void Text::init(Form * f, unsigned int font, std::string t, unsigned int x, unsigned int y, uo_dword huesentry) {
+    init(f, font, t.c_str(), x, y, huesentry);
 }
 
 void Text::shutdown() {

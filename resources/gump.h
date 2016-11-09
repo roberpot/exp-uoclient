@@ -23,7 +23,7 @@ public:
     ~GumpInfo();
     void deflate();
     ResourceRef<Texture> texturize();
-    unsigned int texturize(HuesEntry e, bool from_gray=false);
+    ResourceRef<Texture> texturize(uo_dword huesentry, bool from_gray=false);
     ResourceRef<Texture> texturize(unsigned int color);
     unsigned int memory();
     inline unsigned int width() { return _width; }

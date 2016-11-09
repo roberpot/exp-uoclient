@@ -35,6 +35,7 @@ public:
     HuesManager() {}
     void init(const char * findex);
     void halt();
+    HuesEntry operator[](uo_dword i);
 private:
     HuesManager(const HuesManager &g) { UNUSED_PARAMETER(g); }
     void operator = (const HuesManager & g) { UNUSED_PARAMETER(g); }

@@ -7,8 +7,8 @@
 
 #include <vector>
 
+#include "hues.h"
 #include "../common/garbagecollector/displaylist.h"
-
 #include "../common/debug.h"
 
 class Glyph;
@@ -33,6 +33,7 @@ public:
     Reference operator[](unsigned int i);
 
     ResourceRef<DisplayList> rasterize(const char * buffer);
+    ResourceRef<DisplayList> rasterize(const char * buffer, uo_dword huesentry);
 
 private:
     void update_max_height(Glyph * g);
@@ -47,6 +48,7 @@ public:
     void init(const char * file);
     void halt();
     ResourceRef<DisplayList> rasterize(unsigned int f, const char * buffer);
+    ResourceRef<DisplayList> rasterize(unsigned int f, const char * buffer, uo_dword huesentry);
 private:
     FontManager(const FontManager &f) { UNUSED_PARAMETER(f); }
     void operator=(const FontManager &f) { UNUSED_PARAMETER(f); }

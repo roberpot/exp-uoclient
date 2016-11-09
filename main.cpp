@@ -39,11 +39,8 @@ int main(int argc, char * argv[]) {
     engine->add_processor<VisualProcessor>(2);
     engine->get_processor<VisualProcessor>()->activate();
     Form * f1 = form_login(engine);
-    Form * f2 = form_login(engine);
-//    Form * f3 = form_login(engine);
     f1->enable();
-    f2->enable();
-//    f3->enable();
+
     unsigned int ticks_init, ticks_end;
 
     while (input.continue_execution()) {
@@ -53,12 +50,11 @@ int main(int argc, char * argv[]) {
         SDL_Delay(MAX(50 + ticks_init, ticks_end) - ticks_end);
     }
     f1->disable();
-    f2->disable();
     delete f1;
-    delete f2;
     delete engine;
     gumpmanager.halt();
     fontmanager.halt();
+    huesmanager.halt();
     video.halt_subsystem();
     input.halt_subsystem();
     debug_halt();
