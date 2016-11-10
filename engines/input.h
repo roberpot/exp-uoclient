@@ -5,6 +5,7 @@
 #ifndef __UONEWCLIENT_INPUT_H
 #define __UONEWCLIENT_INPUT_H
 
+#include <cstring>
 
 #include "../common/debug.h"
 
@@ -42,6 +43,7 @@ public:
     inline unsigned int get_ticks() { return _ticks_update; }
     inline bool continue_execution() { return _continue_execution; }
     inline unsigned int collide_color() { return _collide_color; }
+    inline void collide_color(float * v) { memcpy(v, _float_collide_color, sizeof(float) * 4); }
 private:
     InputEngine(const InputEngine &v) { UNUSED_PARAMETER(v); }
     void operator = (const InputEngine &v) { UNUSED_PARAMETER(v); }
@@ -50,6 +52,7 @@ private:
     unsigned short _mouse_status;
     bool _continue_execution;
     unsigned int _collide_color;
+    float _float_collide_color[4];
     unsigned int _ticks_update;
 } input;
 

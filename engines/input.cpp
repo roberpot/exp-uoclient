@@ -95,4 +95,5 @@ void InputEngine::run() {
     }
     _ticks_update = SDL_GetTicks();
     _collide_color = video.get_collor_at_position(_x, _y);
+    video.get_collor_at_position(_x, _y, _float_collide_color);
 }

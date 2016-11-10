@@ -18,4 +18,5 @@ void PhysicsProcessor::run_tick(unsigned int delay) {
     for (unsigned int i = 0; i < v.size(); i++) {
         v[i]->get_component<PhysicalComponent>()->display();
     }
+//    video.run();
 }

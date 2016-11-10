@@ -9,6 +9,7 @@
 
 #include "debug.h"
 #include "utils.h"
+#include "colorutils.h"
 
 
 unsigned int change_endian(unsigned int i)
@@ -72,7 +73,9 @@ void display_textured_square(int x, int y, int w, int h, int z, unsigned int t, 
 void display_colored_square(int x, int y, int w, int h, int z, unsigned int c) {
     glPushMatrix();
     glTranslated(x, y, z);
-    glColor4iv((int *)&c);
+    glColor4ubv((GLubyte *)&c);
+    glColor4f(1.0, 1.0, 1.0, 0.0);
+//    glColor4f(1.0, 1.0, 0.0, 1.0);
     glBegin(GL_QUADS);
     glVertex2d(0, 0);
     glVertex2d(0, h);
@@ -80,4 +83,18 @@ void display_colored_square(int x, int y, int w, int h, int z, unsigned int c) {
     glVertex2d(w, 0);
     glEnd();
     glPopMatrix();
+}
+
+void display_colored_square(int x, int y, int w, int h, int z, float v[4]) {
+    video.set_color(v);
+    glPushMatrix();
+    glTranslated(x, y, z);
+    glBegin(GL_QUADS);
+    glVertex2d(0, 0);
+    glVertex2d(0, h);
+    glVertex2d(w, h);
+    glVertex2d(w, 0);
+    glEnd();
+    glPopMatrix();
+    video.set_color(default_color);
 }

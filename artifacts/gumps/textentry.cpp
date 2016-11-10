@@ -64,6 +64,7 @@ void TextEntry::left_click() {
     }
     VisualComponent * vcomp = get_component<VisualComponent>();
     vcomp->shutdown();
+    vcomp->init();
     vcomp->setup_with_dl(_x, _y, 0, _text);
     move(_lx, _ly, _lz);
 }

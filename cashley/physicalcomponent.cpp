@@ -2,12 +2,14 @@
 // Created by rot on 11/10/16.
 //
 
+#include <cmath>
 #include <queue>
 #include <GL/gl.h>
 
 #include "physicalcomponent.h"
 #include "visualcomponent.h"
 #include "../common/utils.h"
+#include "../common/colorutils.h"
 #include "../engines/input.h"
 #include "../artifacts/artifact.h"
 
@@ -36,6 +38,9 @@ void PhysicalComponent::setup(int x, int y, int w, int h, int z, ResourceRef<Tex
     data->texture = texture;
     data->flags = flags;
     move(x, y, z);
+    if (flags & PC_F_DISPLAY_FLAT) {
+        color32_to_fv4(_color, data->_4fcolor);
+    }
 }
 
 void PhysicalComponent::setup(int x, int y, int w, int h, int z, unsigned int flags) {
@@ -43,6 +48,9 @@ void PhysicalComponent::setup(int x, int y, int w, int h, int z, unsigned int fl
     data->h = h;
     data->flags = flags;
     move(x, y, z);
+    if (flags & PC_F_DISPLAY_FLAT) {
+        color32_to_fv4(_color, data->_4fcolor);
+    }
 }
 
 
@@ -53,6 +61,9 @@ void PhysicalComponent::setup_with_dl(int x, int y, int z, ResourceRef<DisplayLi
     data->flags = flags;
     data->_dl = dl;
     move(x, y, z);
+    if (flags & PC_F_DISPLAY_FLAT) {
+        color32_to_fv4(_color, data->_4fcolor);
+    }
 }
 
 void PhysicalComponent::move(int x, int y, int z) {
@@ -66,7 +77,7 @@ void PhysicalComponent::move(int x, int y, int z) {
         data->_dl()->display();
         glPopMatrix();
     } else if (data->flags & PC_F_DISPLAY_FLAT) {
-        display_colored_square(x, y, data->w, data->h, z, _color);
+        display_colored_square(x, y, data->w, data->h, z, data->_4fcolor);
     } else {
         display_textured_square(x, y, data->w, data->h, data->z, data->texture()->get());
     }
@@ -79,6 +90,22 @@ void PhysicalComponent::display() {
 
 void PhysicalComponent::reset_status() {
     _status = BLUR;
+}
+
+#define PC_COLLIDE_TOLERANCE  0.00392157
+
+bool PhysicalComponent::_check_collide_color() {
+    if (data->flags & PC_F_DISPLAY_FLAT) {
+        float v[4];
+        input.collide_color(v);
+        for (unsigned int i = 0; i < 4; i++) {
+            if (fabsf(v[i] - data->_4fcolor[i]) >= PC_COLLIDE_TOLERANCE) {
+                return false;
+            }
+        }
+        return true;
+    }
+    return input.collide_color() == _color;
 }
 
 void PhysicalComponent::run() {
@@ -94,7 +121,7 @@ void PhysicalComponent::run() {
         _RRELEASE,
     };
     std::queue<_EventMessage> events;
-    if (input.collide_color() == _color) {
+    if (_check_collide_color()) {
         events.push(_OVER);
     } else {
         events.push(_BLUR);

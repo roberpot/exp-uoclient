@@ -18,6 +18,8 @@ public:
     void run();
     void clear();
     unsigned int get_collor_at_position(int x, int y);
+    void get_collor_at_position(int x, int y, float * v);
+    void set_color(float * v);
 private:
     VideoEngine(const VideoEngine &v) { UNUSED_PARAMETER(v); }
     void operator = (const VideoEngine &v) { UNUSED_PARAMETER(v); }

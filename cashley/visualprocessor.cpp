@@ -8,7 +8,7 @@
 #include "../common/debug.h"
 #include "visualprocessor.h"
 #include "visualcomponent.h"
-
+#include "../common/utils.h"
 
 void VisualProcessor::run_tick(unsigned int delay) {
     UNUSED_PARAMETER(delay);
@@ -21,5 +21,8 @@ void VisualProcessor::run_tick(unsigned int delay) {
     for (unsigned int i = 0; i < v.size(); i++) {
         v[i]->get_component<VisualComponent>()->display();
     }
+//    video.clear();
+//    float c[4] = {1.0, 0.0, 0.0, 1.0};
+//    display_colored_square(333, 348, 200, 22, -2000, c);
     video.run();
 }

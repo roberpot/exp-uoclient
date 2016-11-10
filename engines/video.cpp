@@ -8,6 +8,7 @@
 #endif
 
 #include "../common/debug.h"
+#include "../common/colorutils.h"
 #include "video.h"
 
 
@@ -57,6 +58,7 @@ void VideoEngine::init_subsystem() {
     DEBUG_INFO("Initialize shaders...");
     compile_shaders();
     DEBUG_INFO("Initialize shaders... OK");
+    set_color(default_color);
 }
 
 void VideoEngine::halt_subsystem() {
@@ -138,5 +140,19 @@ unsigned int VideoEngine::get_collor_at_position(int x, int y) {
     unsigned int color;
     color = 0;
     glReadPixels(x, h - y, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, &color);
+    if (4278190085 == color)
+        DEBUG_INFO(color);
     return color;
+}
+
+void VideoEngine::get_collor_at_position(int x, int y, float * v) {
+    glReadPixels(x, h - y, 1, 1, GL_RED, GL_FLOAT, v);
+    glReadPixels(x, h - y, 1, 1, GL_GREEN, GL_FLOAT, &v[1]);
+    glReadPixels(x, h - y, 1, 1, GL_BLUE, GL_FLOAT, &v[2]);
+    glReadPixels(x, h - y, 1, 1, GL_ALPHA, GL_FLOAT, &v[3]);
+}
+
+void VideoEngine::set_color(float * v) {
+    GLint unicolor = glGetUniformLocation(_programobject, "color");
+    glUniform4f(unicolor, v[0], v[1], v[2], v[3]);
 }

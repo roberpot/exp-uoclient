@@ -21,6 +21,7 @@ public:
     unsigned int flags;
     ResourceRef<DisplayList> _dl;
     ResourceRef<Texture> texture;
+    float _4fcolor[4];
 };
 
 class InputEngine;
@@ -40,6 +41,7 @@ public:
     unsigned int get_color() { return _color; }
     CASHLEY_COMPONENT
 private:
+    bool _check_collide_color();
     enum Status {
         BLUR = 0,
         OVER,
