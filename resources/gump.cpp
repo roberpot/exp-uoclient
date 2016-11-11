@@ -80,6 +80,7 @@ ResourceRef<Texture> GumpInfo::texturize() {
 
 ResourceRef<Texture> GumpInfo::texturize(uo_dword huesentry, bool from_gray) {
     HuesEntry hue = huesmanager[huesentry];
+    UNUSED_PARAMETER(hue);
     UNUSED_PARAMETER(from_gray);
     return 0;
 }

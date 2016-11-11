@@ -16,7 +16,7 @@
 
 unsigned int PhysicalComponent::_color_serial = 0xFF000000;
 
-#define MAX_WAIT_FOR_DCLICK  500
+#define MAX_WAIT_FOR_DCLICK  250
 #define MAX_WAIT_FOR_DRAG    200
 
 
@@ -92,7 +92,7 @@ void PhysicalComponent::reset_status() {
     _status = BLUR;
 }
 
-#define PC_COLLIDE_TOLERANCE  0.00392157
+#define PC_COLLIDE_TOLERANCE  0.00222157
 
 bool PhysicalComponent::_check_collide_color() {
     if (data->flags & PC_F_DISPLAY_FLAT) {

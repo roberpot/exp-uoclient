@@ -25,7 +25,10 @@ Form * form_login(CAshley::Engine * e) {
     resizepic->init(f, 9350, 329, 344, 209, 30);
     resizepic = new ResizePic;
     resizepic->init(f, 9350, 329, 384, 209, 30);
-    TextEntry * textentry = new TextEntry;
+    TextEntry * textentry;
+    textentry = new TextEntry;
     textentry->init(f, 1, "username", "test", 333, 348, 200, 22);
+    textentry = new TextEntry;
+    textentry->init(f, 1, "password", "test", 333, 388, 200, 22);
     return f;
 }

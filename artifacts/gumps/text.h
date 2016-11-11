@@ -20,6 +20,7 @@ public:
     void move(int x, int y, int z);
     void shutdown();
     ~Text() {}
+    CASHLEY_ENTITY
 private:
     ResourceRef<DisplayList> _text;
 };

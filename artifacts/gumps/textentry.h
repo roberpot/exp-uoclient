@@ -21,6 +21,7 @@ public:
     void shutdown();
     void left_click();
     ~TextEntry() {}
+    CASHLEY_ENTITY
 private:
     int _lx, _ly, _lz;
     unsigned int _font;
