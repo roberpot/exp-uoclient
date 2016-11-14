@@ -27,6 +27,7 @@ Core core;
 Core::Core() {
     _form_uids = 0;
     _highest_layer = UINT_MAX;
+    _input = NULL;
 }
 
 unsigned int Core::add_form(Form * f) {
@@ -51,4 +52,19 @@ int Core::focus(int layer) {
     _displayed_forms.erase(layer);
     _displayed_forms[_highest_layer] = f;
     return _highest_layer;
+}
+
+bool Core::try_to_focus(InputReader * i) {
+    if (_input) {
+        _input->blur();
+    }
+    _input = i;
+    return true;
+}
+
+void Core::blur(InputReader * i) {
+    if (_input == i) {
+        _input->blur();
+        _input = NULL;
+    }
 }

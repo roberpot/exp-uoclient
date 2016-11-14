@@ -41,13 +41,14 @@ int main(int argc, char * argv[]) {
     Form * f1 = form_login(engine);
     f1->enable();
 
-    unsigned int ticks_init, ticks_end;
+    unsigned int ticks_init, ticks_end, ticks_prev = 0;
 
     while (input.continue_execution()) {
         ticks_init = SDL_GetTicks();
-        engine->run_tick(1);
+        engine->run_tick(ticks_init - ticks_prev);
         ticks_end = SDL_GetTicks();
         SDL_Delay(MAX(50 + ticks_init, ticks_end) - ticks_end);
+        ticks_prev = ticks_init;
     }
     f1->disable();
     delete f1;

@@ -8,12 +8,14 @@
 #include <string>
 
 #include <cashley/cashley.h>
+#include <SDL2/SDL_render.h>
 
 #include "../../common/types.h"
 #include "../../common/garbagecollector/displaylist.h"
 #include "basegump.h"
+#include "../inputreader.h"
 
-class TextEntry : public CAshley::Entity, public BaseGump {
+class TextEntry : public CAshley::Entity, public BaseGump, public InputReader {
 public:
     void init(Form * f, unsigned int font, const char * n, const char * t, unsigned int x, unsigned int y, unsigned int w, unsigned int h);
     void init(Form * f, unsigned int font, const char * n, const char * t, unsigned int x, unsigned int y, unsigned int w, unsigned int h, uo_dword huesentry);
@@ -21,7 +23,11 @@ public:
     void shutdown();
     void left_click();
     ~TextEntry() {}
+    void get_char(const char c);
     CASHLEY_ENTITY
+protected:
+    void _focus();
+    void _blur();
 private:
     int _lx, _ly, _lz;
     unsigned int _font;

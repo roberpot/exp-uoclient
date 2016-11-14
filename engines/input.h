@@ -6,6 +6,7 @@
 #define __UONEWCLIENT_INPUT_H
 
 #include <cstring>
+#include <map>
 
 #include "../common/debug.h"
 
@@ -26,7 +27,7 @@ public:
     InputEngine() {};
     void init_subsystem();
     void halt_subsystem();
-    void run();
+    void run(unsigned int delay);
     inline int get_x() { return _x; }
     inline int get_y() { return _y; }
     inline int get_x_run() { return _x_run; }
@@ -54,6 +55,7 @@ private:
     unsigned int _collide_color;
     float _float_collide_color[4];
     unsigned int _ticks_update;
+    std::map<char, unsigned int> _keypress_first, _keypress_second;
 } input;
 
 

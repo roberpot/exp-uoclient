@@ -13,7 +13,7 @@ void InputProcessor::run_tick(unsigned int delay) {
     CAshley::EntityArray v;
     f.filter<PhysicalComponent>();
     v = this->_engine->get_entities_for(f);
-    input.run();
+    input.run(delay);
     for (unsigned int i = 0; i < v.size(); i++) {
         v[i]->get_component<PhysicalComponent>()->run();
     }

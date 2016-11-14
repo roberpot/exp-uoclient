@@ -57,6 +57,20 @@ void TextEntry::move(int x, int y, int z) {
 }
 
 void TextEntry::left_click() {
+    focus();
+}
+
+void TextEntry::shutdown() {
+    force_blur();
+    _text = ResourceRef<DisplayList>();
+}
+
+void TextEntry::get_char(const char c) {
+    _buffer += c;
+    _focus();
+}
+
+void TextEntry::_focus() {
     if (_hues == -1) {
         _text = fontmanager.rasterize(_font, (_buffer + '_').c_str());
     } else {
@@ -69,6 +83,15 @@ void TextEntry::left_click() {
     move(_lx, _ly, _lz);
 }
 
-void TextEntry::shutdown() {
-    _text = ResourceRef<DisplayList>();
+void TextEntry::_blur() {
+    if (_hues == -1) {
+        _text = fontmanager.rasterize(_font, _buffer.c_str());
+    } else {
+        _text = fontmanager.rasterize(_font, _buffer.c_str(), _hues);
+    }
+    VisualComponent * vcomp = get_component<VisualComponent>();
+    vcomp->shutdown();
+    vcomp->init();
+    vcomp->setup_with_dl(_x, _y, 0, _text);
+    move(_lx, _ly, _lz);
 }

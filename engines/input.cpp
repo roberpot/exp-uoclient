@@ -2,6 +2,8 @@
 // Created by rot on 13/10/16.
 //
 
+#include <queue>
+
 #include <SDL2/SDL.h>
 
 #include "input.h"
@@ -21,7 +23,9 @@ void InputEngine::halt_subsystem() {
 
 }
 
-void InputEngine::run() {
+void InputEngine::run(unsigned int delay) {
+    UNUSED_PARAMETER(delay);
+    std::queue<char> _char_queue;
     // message processing loop
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -31,10 +35,13 @@ void InputEngine::run() {
                 _continue_execution = false;
                 break;
             case SDL_KEYDOWN: {
-                if (event.key.keysym.sym == SDLK_ESCAPE) {
-                    _continue_execution = false;
-                } break;
-            }
+                if (event.key.keysym.sym >= SDLK_SPACE && event.key.keysym.sym <= SDLK_z) {
+                    DEBUG_INFO("KEY: " << (char)event.key.keysym.sym);
+                }
+//                if (event.key.keysym.sym == SDLK_ESCAPE) {
+//                    _continue_execution = false;
+//                }
+            } break;
         } // end switch
     } // end of message processing
     int old_x = _x, old_y = _y;
