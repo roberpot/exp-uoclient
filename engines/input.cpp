@@ -9,6 +9,8 @@
 #include "input.h"
 #include "video.h"
 #include "../common/utils.h"
+#include "../common/key.h"
+#include "../common/core.h"
 
 
 void InputEngine::init_subsystem() {
@@ -25,7 +27,6 @@ void InputEngine::halt_subsystem() {
 
 void InputEngine::run(unsigned int delay) {
     UNUSED_PARAMETER(delay);
-    std::queue<char> _char_queue;
     // message processing loop
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -35,12 +36,10 @@ void InputEngine::run(unsigned int delay) {
                 _continue_execution = false;
                 break;
             case SDL_KEYDOWN: {
-                if (event.key.keysym.sym >= SDLK_SPACE && event.key.keysym.sym <= SDLK_z) {
-                    DEBUG_INFO("KEY: " << (char)event.key.keysym.sym);
+                if ((event.key.keysym.sym >= SDLK_SPACE && event.key.keysym.sym <= SDLK_z) or (event.key.keysym.sym == SDLK_BACKSPACE)) {
+                    Key k(event.key.keysym.sym);
+                    core.add_key(k);
                 }
-//                if (event.key.keysym.sym == SDLK_ESCAPE) {
-//                    _continue_execution = false;
-//                }
             } break;
         } // end switch
     } // end of message processing

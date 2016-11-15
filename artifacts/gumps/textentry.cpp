@@ -65,8 +65,12 @@ void TextEntry::shutdown() {
     _text = ResourceRef<DisplayList>();
 }
 
-void TextEntry::get_char(const char c) {
-    _buffer += c;
+void TextEntry::get_char(Key k) {
+    if (k.is_backspace() and _buffer.length() > 0) {
+        _buffer.pop_back();
+    } else if (!k.is_backspace()) {
+        _buffer += k;
+    }
     _focus();
 }
 

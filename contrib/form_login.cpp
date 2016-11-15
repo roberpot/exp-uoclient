@@ -27,8 +27,8 @@ Form * form_login(CAshley::Engine * e) {
     resizepic->init(f, 9350, 329, 384, 209, 30);
     TextEntry * textentry;
     textentry = new TextEntry;
-    textentry->init(f, 1, "username", "test", 333, 348, 200, 22);
-    textentry = new TextEntry;
-    textentry->init(f, 1, "password", "test", 333, 388, 200, 22);
+    textentry->init(f, 1, "username", "", 333, 348, 200, 22);
+    PasswordEntry * passwordentry = new PasswordEntry;
+    passwordentry->init(f, 1, "password", "", 333, 388, 200, 22);
     return f;
 }

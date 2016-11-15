@@ -9,6 +9,7 @@
 #include <map>
 
 #include "../common/debug.h"
+#include "../common/key.h"
 
 
 #define INPUT_LBUTTON  0x001
@@ -55,7 +56,6 @@ private:
     unsigned int _collide_color;
     float _float_collide_color[4];
     unsigned int _ticks_update;
-    std::map<char, unsigned int> _keypress_first, _keypress_second;
 } input;
 
 

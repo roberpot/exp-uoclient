@@ -13,6 +13,9 @@ public:
     Key(const Key & k);
     Key operator=(Key k);
     operator char();
+    friend class KeyComp;
+    friend class KeyCompMacro;
+    bool is_backspace();
 private:
     SDL_Keycode _key;
     bool _ctrl, _alt, _shift;

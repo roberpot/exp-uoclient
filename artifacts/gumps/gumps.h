@@ -10,5 +10,6 @@
 #include "resizepic.h"
 #include "text.h"
 #include "textentry.h"
+#include "passwordentry.h"
 
 #endif //__UONEWCLIENT_GUMPS_H

@@ -9,6 +9,7 @@
 
 #include "../artifacts/form.h"
 #include "../artifacts/inputreader.h"
+#include "key.h"
 
 extern class Core {
 public:
@@ -19,6 +20,7 @@ public:
     int focus(int layer);
     bool try_to_focus(InputReader * i);
     void blur(InputReader * i);
+    void add_key(Key k);
 private:
     unsigned int _form_uids;
     int _highest_layer;

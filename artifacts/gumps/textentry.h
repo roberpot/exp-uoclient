@@ -23,18 +23,18 @@ public:
     void shutdown();
     void left_click();
     ~TextEntry() {}
-    void get_char(const char c);
+    void get_char(Key k);
     CASHLEY_ENTITY
 protected:
-    void _focus();
-    void _blur();
-private:
-    int _lx, _ly, _lz;
+    virtual void _focus();
+    virtual void _blur();
     unsigned int _font;
-    uo_dword _hues;
     std::string _buffer;
-    std::string _name;
     ResourceRef<DisplayList> _text;
+    int _lx, _ly, _lz;
+    uo_dword _hues;
+private:
+    std::string _name;
 };
 
 #endif //__UONEWCLIENT_TEXTENTRY_H

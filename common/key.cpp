@@ -14,7 +14,7 @@ Key::Key(SDL_Keycode _k) {
     _v = (char)_k;
     if (_v >= SDLK_a && _v <= SDLK_z) {
         if (_shift != (mod & KMOD_CAPS)) {
-            _v += 32;
+            _v -= 32;
         }
     }
 }
@@ -38,4 +38,29 @@ Key Key::operator=(Key k) {
 
 Key::operator char() {
     return _v;
+}
+
+bool Key::is_backspace() {
+    if (_key == SDLK_BACKSPACE)
+        return true;
+    return false;
+}
+
+
+bool KeyComp::operator()(Key a, Key b) {
+    return a._key < b._key;
+}
+
+
+bool KeyCompMacro::operator()(Key a, Key b) {
+    if (a._ctrl != b._ctrl) {
+        return a._ctrl;
+    }
+    if (a._ctrl != b._ctrl) {
+        return a._ctrl;
+    }
+    if (a._shift != b._shift) {
+        return a._shift;
+    }
+    return a._key < b._key;
 }

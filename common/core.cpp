@@ -68,3 +68,9 @@ void Core::blur(InputReader * i) {
         _input = NULL;
     }
 }
+
+void Core::add_key(Key k) {
+    if (_input) {
+        _input->get_char(k);
+    }
+}

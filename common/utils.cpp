@@ -98,3 +98,23 @@ void display_colored_square(int x, int y, int w, int h, int z, float v[4]) {
     glPopMatrix();
     video.set_color(default_color);
 }
+
+std::string operator*(std::string input, unsigned int counter) {
+    std::string output;
+    while(counter) {
+        output += input;
+        counter--;
+    }
+    return output;
+}
+
+std::string operator*=(std::string & input, unsigned int counter) {
+    std::string tmp;
+    while(counter) {
+        tmp += input;
+        counter--;
+    }
+    input = tmp;
+    return input;
+
+}
