@@ -14,32 +14,105 @@ IF(CMAKE_COMPILER_IS_GNUCC)
     FIND_PACKAGE(GLEW REQUIRED)
 ENDIF(CMAKE_COMPILER_IS_GNUCC)
 
-SET(SOURCE_FILES
-    common/colorutils.h
-    common/debug.cpp
-    common/debug.h
-    common/errors.h
-    common/errors.cpp
-    common/textureutils.cpp
-    common/textureutils.h
-    common/types.h
-    common/utils.cpp
-    common/utils.h
-    engines/video.cpp
-    engines/video.h
-    resources/gump.cpp
-    resources/gump.h
-    resources/font.cpp
-    resources/font.h
-    main.cpp
-    cashley/physicalcomponent.cpp
-        cashley/physicalcomponent.h
-        cashley/visualcomponent.cpp
-        cashley/visualcomponent.h
+SET(ARTIFACTS_SOURCE_FILES
+        artifacts/gumps/basegump.cpp
+        artifacts/gumps/basegump.h
+        artifacts/gumps/button.cpp
+        artifacts/gumps/button.h
         artifacts/gumps/gumppic.cpp
         artifacts/gumps/gumppic.h
+        artifacts/gumps/gumps.h
+        artifacts/gumps/passwordentry.cpp
+        artifacts/gumps/passwordentry.h
+        artifacts/gumps/resizepic.cpp
+        artifacts/gumps/resizepic.h
+        artifacts/gumps/text.cpp
+        artifacts/gumps/text.h
+        artifacts/gumps/textentry.cpp
+        artifacts/gumps/textentry.h
+        artifacts/artifact.cpp
+        artifacts/artifact.h
+        artifacts/form.cpp
+        artifacts/form.h
+        artifacts/inputreader.cpp
+        artifacts/inputreader.h
+        )
+
+SET(CASHLEY_SOURCE_FILES
+        cashley/inputprocessor.cpp
+        cashley/inputprocessor.h
+        cashley/physicalcomponent.cpp
+        cashley/physicalcomponent.h
+        cashley/physicsprocessor.cpp
+        cashley/physicsprocessor.h
+        cashley/visualcomponent.cpp
+        cashley/visualcomponent.h
         cashley/visualprocessor.cpp
-        cashley/visualprocessor.h artifacts/form.cpp artifacts/form.h artifacts/gumps/basegump.cpp artifacts/gumps/basegump.h artifacts/artifact.cpp artifacts/artifact.h engines/input.cpp engines/input.h contrib/form_login.cpp contrib/form_login.h artifacts/gumps/gumps.h artifacts/gumps/text.cpp artifacts/gumps/text.h cashley/physicsprocessor.cpp cashley/physicsprocessor.h cashley/inputprocessor.cpp cashley/inputprocessor.h artifacts/gumps/resizepic.cpp artifacts/gumps/resizepic.h shaders/textureloader.h shaders/textureloader.cpp resources/hues.cpp resources/hues.h resources/entry3d.h resources/indexfile.cpp resources/indexfile.h common/garbagecollector/resourcereferencer.cpp common/garbagecollector/resourcereferencer.h common/garbagecollector/texture.cpp common/garbagecollector/texture.h common/garbagecollector/displaylist.cpp common/garbagecollector/displaylist.h common/core.cpp common/core.h artifacts/gumps/textentry.cpp artifacts/gumps/textentry.h common/colorutils.cpp artifacts/inputreader.cpp artifacts/inputreader.h common/key.cpp common/key.h artifacts/gumps/passwordentry.cpp artifacts/gumps/passwordentry.h)
+        cashley/visualprocessor.h
+        )
+
+SET(COMMON_SOURCE_FILES
+        common/garbagecollector/displaylist.cpp
+        common/garbagecollector/displaylist.h
+        common/garbagecollector/resourcereferencer.cpp
+        common/garbagecollector/resourcereferencer.h
+        common/garbagecollector/texture.cpp
+        common/garbagecollector/texture.h
+        common/colorutils.cpp
+        common/colorutils.h
+        common/core.cpp
+        common/core.h
+        common/debug.cpp
+        common/debug.h
+        common/errors.h
+        common/errors.cpp
+        common/key.cpp
+        common/key.h
+        common/textureutils.cpp
+        common/textureutils.h
+        common/types.h
+        common/utils.cpp
+        common/utils.h
+        )
+
+SET(CONTRIB_SOURCE_FILES
+        contrib/form_login.cpp
+        contrib/form_login.h
+        )
+
+SET(ENGINES_SOURCE_FILES
+        engines/input.cpp
+        engines/input.h
+        engines/video.cpp
+        engines/video.h
+        )
+
+SET(RESOURCES_SOURCE_FILES
+        resources/entry3d.h
+        resources/font.cpp
+        resources/font.h
+        resources/gump.cpp
+        resources/gump.h
+        resources/hues.cpp
+        resources/hues.h
+        resources/indexfile.cpp
+        resources/indexfile.h
+        )
+
+SET(SHADERS_SOURCE_FILES
+        shaders/textureloader.cpp
+        shaders/textureloader.h
+        )
+
+SET(SOURCE_FILES
+        ${ARTIFACTS_SOURCE_FILES}
+        ${CASHLEY_SOURCE_FILES}
+        ${COMMON_SOURCE_FILES}
+        ${CONTRIB_SOURCE_FILES}
+        ${ENGINES_SOURCE_FILES}
+        ${RESOURCES_SOURCE_FILES}
+        ${SHADERS_SOURCE_FILES}
+        main.cpp)
 
 add_executable(uonewclient_release ${SOURCE_FILES})
 add_executable(uonewclient_info ${SOURCE_FILES})

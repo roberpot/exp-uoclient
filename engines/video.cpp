@@ -140,8 +140,6 @@ unsigned int VideoEngine::get_collor_at_position(int x, int y) {
     unsigned int color;
     color = 0;
     glReadPixels(x, h - y, 1, 1, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, &color);
-    if (4278190085 == color)
-        DEBUG_INFO(color);
     return color;
 }
 

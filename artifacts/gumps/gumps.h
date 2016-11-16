@@ -11,5 +11,6 @@
 #include "text.h"
 #include "textentry.h"
 #include "passwordentry.h"
+#include "button.h"
 
 #endif //__UONEWCLIENT_GUMPS_H
