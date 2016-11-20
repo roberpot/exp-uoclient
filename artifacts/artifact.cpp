@@ -25,10 +25,26 @@ void Artifact::right_click() {
 
 }
 
-void Artifact::left_release() {
+void Artifact::left_down() {
 
 }
 
-void Artifact::right_release() {
+void Artifact::right_down() {
+
+}
+
+void Artifact::left_up() {
+
+}
+
+void Artifact::right_up() {
+
+}
+
+void Artifact::over() {
+
+}
+
+void Artifact::blur() {
 
 }

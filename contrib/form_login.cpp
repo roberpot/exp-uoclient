@@ -30,5 +30,9 @@ Form * form_login(CAshley::Engine * e) {
     textentry->init(f, 1, "username", "", 333, 348, 200, 22);
     PasswordEntry * passwordentry = new PasswordEntry;
     passwordentry->init(f, 1, "password", "", 333, 388, 200, 22);  // 0x1589 N O I
+    Button * button = new Button;
+    button->init(f, 0x1589, 0x158a, 0x158b, 554, 3);
+    button = new Button;
+    button->init(f, 0x15a4, 0x15a5, 0x15a6, 611, 434);
     return f;
 }

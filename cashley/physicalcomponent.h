@@ -28,7 +28,8 @@ class InputEngine;
 
 class PhysicalComponent : public CAshley::Component {
 public:
-    void init();
+    PhysicalComponent();
+    void init(bool reset=true);
     void shutdown();
 //    void setup();
     void setup(int x, int y, int w, int h, int z, ResourceRef<Texture> texture, unsigned int flags = PC_F_NONE);

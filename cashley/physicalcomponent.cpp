@@ -16,15 +16,20 @@
 
 unsigned int PhysicalComponent::_color_serial = 0xFF000000;
 
-#define MAX_WAIT_FOR_DCLICK  250
-#define MAX_WAIT_FOR_DRAG    200
+#define MAX_WAIT_FOR_DCLICK  200
+#define MAX_WAIT_FOR_DRAG    100
 
 
-void PhysicalComponent::init() {
+PhysicalComponent::PhysicalComponent() {
     _color = ++_color_serial;
+}
+
+void PhysicalComponent::init(bool reset) {
     _dl = ResourceRef<DisplayList>(new DisplayList);
     data = new PhysicalComponentData;
-    reset_status();
+    if (reset) {
+        reset_status();
+    }
 }
 
 void PhysicalComponent::shutdown() {
@@ -153,6 +158,7 @@ void PhysicalComponent::run() {
                     case _OVER: {
                         _status = OVER;
                         // call artifact over.
+                        dynamic_cast<Artifact*>(get_owner())->over();
                     }
                     default: break;
                 }
@@ -162,10 +168,12 @@ void PhysicalComponent::run() {
                     case _BLUR: {
                         _status = BLUR;
                         // call artifact blur.
+                        dynamic_cast<Artifact*>(get_owner())->blur();
                     } break;
                     case _LCLICK: {
                         _status = LPUSHED_OVER;
                         _last_action_ticks = input.get_ticks();
+                        dynamic_cast<Artifact*>(get_owner())->left_down();
                     } break;
                     case _RCLICK: {
                         _status = RPUSHED;
@@ -184,9 +192,11 @@ void PhysicalComponent::run() {
                     case _BLUR: {
                         _status = LPUSHED_BLUR;
                         // call artifact blur.
+                        dynamic_cast<Artifact*>(get_owner())->blur();
                     } break;
                     case _LRELEASE: {
                         _status = OVER_WAITING;
+                        dynamic_cast<Artifact*>(get_owner())->left_up();
                     } break;
                     case _RCLICK: {
                         _status = RPUSHED;
@@ -202,10 +212,12 @@ void PhysicalComponent::run() {
                 switch(m) {
                     case _LRELEASE: {
                         _status = BLUR;
+                        dynamic_cast<Artifact*>(get_owner())->left_up();
                     } break;
                     case _OVER: {
                         _status = LPUSHED_OVER;
                         // call artifact over.
+                        dynamic_cast<Artifact*>(get_owner())->over();
                     } break;
                     default: break;
                 }
@@ -226,10 +238,12 @@ void PhysicalComponent::run() {
                     case _LCLICK: {
                         _status = LPUSHED2_OVER;
                         _last_action_ticks_2 = input.get_ticks();
+                        dynamic_cast<Artifact*>(get_owner())->left_down();
                     } break;
                     case _BLUR: {
                         _status = BLUR;
                         // call artifact blur.
+                        dynamic_cast<Artifact*>(get_owner())->blur();
                         // call artifact lclick.
                         dynamic_cast<Artifact*>(get_owner())->left_click();
                     } break;
@@ -251,9 +265,11 @@ void PhysicalComponent::run() {
                     case _BLUR: {
                         _status = LPUSHED_BLUR;
                         // call artifact blur.
+                        dynamic_cast<Artifact*>(get_owner())->blur();
                     } break;
                     case _LRELEASE: {
                         _status = OVER;
+                        dynamic_cast<Artifact*>(get_owner())->left_up();
                         if (input.get_ticks() < (MAX_WAIT_FOR_DCLICK + _last_action_ticks)) {
                             // call artifact dlclick.
                         } else {

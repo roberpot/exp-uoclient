@@ -13,8 +13,12 @@ public:
     virtual void drag(int x, int y);
     virtual void left_click();
     virtual void right_click();
-    virtual void left_release();
-    virtual void right_release();
+    virtual void left_down();
+    virtual void right_down();
+    virtual void left_up();
+    virtual void right_up();
+    virtual void over();
+    virtual void blur();
     virtual ~Artifact() { }
 private:
 };
